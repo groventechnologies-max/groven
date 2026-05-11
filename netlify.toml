@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  VITE_SUPA_URL = "https://urmzqtldzpinvsmcpjyo.supabase.co"
+  VITE_SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVybXpxdGxkenBpbnZzbWNwanlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMDEzNTUsImV4cCI6MjA5MzY3NzM1NX0.XlfpM7W2O5QCLgy_zRH5vkKCiHjccpXz60Ak0OQjFsw"
