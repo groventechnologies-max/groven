@@ -58,11 +58,17 @@
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('features')">Produto</a>
-  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('how')">Como funciona</a>
-  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('cta')">Contato</a>
-  <a href="javascript:void(0)" id="mobile-auth-link" class="mobile-cta mobile-link" onclick="openAuth()">Entrar</a>
-  <a href="javascript:void(0)" id="mobile-dash-link" class="mobile-cta mobile-link" style="display:none" onclick="openDash()">Meu painel</a>
+  <div class="mm-header">
+    <span class="mm-brand">groven</span>
+    <button class="mm-close" onclick="document.getElementById('hamburger').click()" aria-label="Fechar menu">✕</button>
+  </div>
+  <nav class="mm-nav">
+    <a href="javascript:void(0)" class="mm-link mobile-link" onclick="scrollToSection('features')"><span class="mm-icon">⚙️</span><span class="mm-label">Produto</span></a>
+    <a href="javascript:void(0)" class="mm-link mobile-link" onclick="scrollToSection('how')"><span class="mm-icon">💡</span><span class="mm-label">Como funciona</span></a>
+    <a href="javascript:void(0)" class="mm-link mobile-link" onclick="scrollToSection('cta')"><span class="mm-icon">💬</span><span class="mm-label">Contato</span></a>
+    <a href="javascript:void(0)" id="mobile-auth-link" class="mm-link mobile-link" onclick="openAuth()"><span class="mm-icon">👤</span><span class="mm-label">Entrar</span></a>
+    <a href="javascript:void(0)" id="mobile-dash-link" class="mm-link mobile-link" style="display:none" onclick="openDash()"><span class="mm-icon">📊</span><span class="mm-label">Meu painel</span></a>
+  </nav>
 </div>
 
 <!-- HERO -->

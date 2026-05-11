@@ -59,11 +59,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);z-index:150;flex-direction:column;justify-content:center;align-items:center;gap:40px;opacity:0;transition:opacity 0.3s}
-.mobile-menu.open{display:flex;opacity:1}
-.mobile-menu a{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--white);text-decoration:none;letter-spacing:-1px;opacity:0.5;transition:opacity 0.3s}
-.mobile-menu a:hover{opacity:1}
-.mobile-menu .mobile-cta{font-family:'DM Sans',sans-serif;font-size:1rem;background:var(--white);color:var(--black)!important;opacity:1!important;padding:16px 40px;border-radius:100px;font-weight:500;margin-top:16px}
+.mobile-menu{position:fixed;inset:0;background:#0a0a0a;z-index:150;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform 0.38s cubic-bezier(0.4,0,0.2,1);visibility:hidden;pointer-events:none}
+.mobile-menu.open{transform:translateX(0);visibility:visible;pointer-events:auto}
+.mm-header{display:flex;align-items:center;justify-content:space-between;padding:56px 28px 22px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.mm-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:3px;color:rgba(255,255,255,0.3);text-transform:uppercase}
+.mm-close{width:48px;height:48px;border:1px solid rgba(255,255,255,0.12);background:none;color:rgba(255,255,255,0.45);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+.mm-close:hover{color:#fff;border-color:rgba(255,255,255,0.35)}
+.mm-nav{display:flex;flex-direction:column;flex:1}
+.mm-link{display:flex;align-items:center;gap:22px;padding:26px 28px;border-bottom:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.28);text-decoration:none;transition:color 0.2s,background 0.2s;cursor:pointer}
+.mm-link:hover{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.02)}
+.mm-icon{font-size:1.4rem;width:36px;text-align:center;flex-shrink:0}
+.mm-label{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;letter-spacing:-0.5px;color:inherit;line-height:1}
 
 /* ── Hero ── */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 40px 80px;position:relative;overflow:hidden}

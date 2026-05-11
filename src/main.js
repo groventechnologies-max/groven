@@ -76,7 +76,7 @@ function updateNavState() {
   setAvatar('nav-av', p.avatar_url, ini);
   document.getElementById('nav-nm').textContent = p.full_name?.split(' ')[0] || p.email;
   document.getElementById('mobile-auth-link').style.display = 'none';
-  document.getElementById('mobile-dash-link').style.display = 'block';
+  document.getElementById('mobile-dash-link').style.display = 'flex';
 }
 
 // ── Notifications ─────────────────────────────────────────────────────────
@@ -284,7 +284,7 @@ async function doLogout() {
   currentUser = null; currentProfile = null;
   document.getElementById('nav-login-btn').style.display = '';
   document.getElementById('nav-user-state').style.display = 'none';
-  document.getElementById('mobile-auth-link').style.display = 'block';
+  document.getElementById('mobile-auth-link').style.display = 'flex';
   document.getElementById('mobile-dash-link').style.display = 'none';
   closeDash();
 }
