@@ -402,11 +402,13 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   footer{flex-direction:column;gap:16px;text-align:center;padding:40px 20px}
   .footer-links{justify-content:center;gap:20px}
   .footer-copy{font-size:0.75rem}
-  .dash-layout{flex-direction:column}
-  .dash-sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:6px 0;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .dash-nav-item{white-space:nowrap;border-left:none;border-bottom:2px solid transparent;padding:10px 12px;font-size:0.78rem}
-  .dash-nav-item.active{border-left:none;border-bottom-color:var(--white)}
-  .dash-content{padding:18px 14px}
+  .dash-layout{display:block}
+  .dash-sidebar{width:100%;height:62px;position:fixed;bottom:0;left:0;right:0;border-right:none;border-top:1px solid var(--border);border-bottom:none;padding:0;display:flex;flex-direction:row;overflow:visible;z-index:410;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+  #sidebar-client,#sidebar-admin{width:100%;height:100%;flex-direction:row}
+  .dash-nav-item{flex:1;flex-direction:column;align-items:center;justify-content:center;padding:6px 2px 8px;gap:2px;border-left:none;border-bottom:none;border-top:2px solid transparent;font-size:0.58rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex}
+  .dash-nav-item.active{border-left:none;border-top-color:var(--white);background:rgba(255,255,255,0.04)}
+  .dash-nav-item .nav-icon{font-size:1.2rem;width:auto;display:block}
+  .dash-content{padding:18px 14px 80px}
   .dform-grid{grid-template-columns:1fr}
   .dspan2{grid-column:span 1}
   .dash-uname{display:none}

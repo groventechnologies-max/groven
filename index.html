@@ -436,6 +436,21 @@
   </div>
 </div>
 
+<!-- MODAL: Delete project confirmation -->
+<div class="edit-overlay" id="deleteProjectConfirm">
+  <div class="edit-box" style="max-width:400px">
+    <div class="edit-title">Tem certeza?</div>
+    <input type="hidden" id="del-project-id"/>
+    <p style="color:var(--gray);font-size:0.88rem;line-height:1.6;margin-bottom:20px">
+      Você está prestes a remover o projeto <strong id="del-project-title" style="color:var(--white)"></strong>. Esta ação não pode ser desfeita.
+    </p>
+    <div class="edit-actions">
+      <button class="dbtn" style="background:var(--red);color:#fff" onclick="confirmDeleteProject()">Sim, remover</button>
+      <button class="dbtn-outline" onclick="closeEdit('deleteProjectConfirm')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: Delete confirmation -->
 <div class="edit-overlay" id="deleteConfirm">
   <div class="edit-box" style="max-width:400px">

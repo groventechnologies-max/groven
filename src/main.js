@@ -28,6 +28,12 @@ function closeDash() {
   if (o) { o.classList.remove('open'); document.body.style.overflow = ''; }
 }
 
+function setSidebarVisible(id, visible) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = !visible ? 'none' : (window.matchMedia('(max-width:768px)').matches ? 'flex' : 'block');
+}
+
 // ── Init ──────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('btn-login')?.addEventListener('click', doLogin);
@@ -295,13 +301,13 @@ function openDash() {
   rp.textContent = p.role === 'admin' ? 'Admin' : 'Cliente';
   rp.className = 'role-pill ' + (p.role === 'admin' ? 'role-admin' : 'role-client');
   if (p.role === 'admin') {
-    document.getElementById('sidebar-client').style.display = 'none';
-    document.getElementById('sidebar-admin').style.display = 'block';
+    setSidebarVisible('sidebar-client', false);
+    setSidebarVisible('sidebar-admin', true);
     ['page-overview', 'page-contacts', 'page-projects', 'page-profile', 'page-notifications'].forEach(id => document.getElementById(id).style.display = 'none');
     showAdminPage('contacts');
   } else {
-    document.getElementById('sidebar-client').style.display = 'block';
-    document.getElementById('sidebar-admin').style.display = 'none';
+    setSidebarVisible('sidebar-client', true);
+    setSidebarVisible('sidebar-admin', false);
     ['admin-contacts-page', 'admin-clients-page', 'admin-projects-page'].forEach(id => document.getElementById(id).style.display = 'none');
     document.getElementById('d-greeting').textContent = `Olá, ${p.full_name?.split(' ')[0] || 'bem-vindo'}!`;
     showDashPage('overview');
@@ -413,7 +419,7 @@ function renderAdminProjectCard(p) {
     <div class="progress-label"><span>Progresso</span><span>${p.progress}%</span></div>
     ${steps.length ? `<div class="project-steps">${steps.map(s => `<div class="project-step-item"><div class="step-check ${s.done ? 'done' : ''}">${s.done ? '✓' : ''}</div><span style="${s.done ? 'text-decoration:line-through;color:var(--gray)' : ''}">${escHtml(s.title)}</span></div>`).join('')}</div>` : ''}
     <div class="project-meta">${p.deadline ? `<div class="project-meta-item">📅 Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item">📋 ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
-    <div style="margin-top:12px"><button class="dbtn-sm" onclick="openEditProject('${p.id}')">✏️ Editar</button></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="dbtn-sm" onclick="openEditProject('${p.id}')">✏️ Editar</button><button class="dbtn-sm" style="color:var(--red);border-color:rgba(248,113,113,0.2)" onclick="adminDeleteProject(this)" data-id="${p.id}" data-title="${escHtml(p.title)}">Remover</button></div>
   </div>`;
 }
 
@@ -535,6 +541,21 @@ async function confirmDelete() {
   closeEdit('deleteConfirm');
   loadAdminContacts();
   showToast('Contato removido.', 'success');
+}
+
+function adminDeleteProject(btn) {
+  document.getElementById('del-project-id').value = btn.dataset.id;
+  document.getElementById('del-project-title').textContent = '"' + btn.dataset.title + '"';
+  document.getElementById('deleteProjectConfirm').classList.add('open');
+}
+
+async function confirmDeleteProject() {
+  const id = document.getElementById('del-project-id').value;
+  await sb.from('project_steps').delete().eq('project_id', id);
+  await sb.from('projects').delete().eq('id', id);
+  closeEdit('deleteProjectConfirm');
+  loadAdminProjects();
+  showToast('Projeto removido.', 'success');
 }
 
 // ── Admin clients ─────────────────────────────────────────────────────────
@@ -878,7 +899,7 @@ Object.assign(window, {
   openEditRole, adminStartChat, confirmAdminStartChat,
   closeThread, sendChatMessage, uploadAttachments,
   openLegalModal, closeLegalModal,
-  closeEdit, saveContact, confirmDelete,
+  closeEdit, saveContact, confirmDelete, adminDeleteProject, confirmDeleteProject,
   saveRole, openNewProject, openEditProject, addStepInput, saveProject,
   saveProfile, uploadAvatar, savePref,
   toggleChat, askSuggestion, sendChatbotMsg,
