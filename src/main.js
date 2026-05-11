@@ -63,8 +63,13 @@ function getInitials(s) {
 function setAvatar(id, url, ini) {
   const el = document.getElementById(id);
   if (!el) return;
-  if (url) { el.innerHTML = `<img src="${url}" alt="av" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; el.textContent = ''; }
-  else { el.innerHTML = ''; el.textContent = ini; }
+  el.innerHTML = '';
+  if (url && /^https?:\/\//.test(url)) {
+    const img = document.createElement('img');
+    img.src = url; img.alt = 'av';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%';
+    el.appendChild(img);
+  } else { el.textContent = ini; }
 }
 
 function updateNavState() {
@@ -169,7 +174,7 @@ function appendMessage(m, scroll = true) {
   const name = mine ? 'Você' : (m.profiles?.full_name || 'Suporte');
   const div = document.createElement('div');
   div.className = `msg-bubble ${mine ? 'mine' : 'theirs'}`;
-  div.innerHTML = `${escHtml(m.content)}<div class="msg-meta"><span>${name}</span><span>·</span><span>${timeAgo(m.created_at)}</span></div>`;
+  div.innerHTML = `${escHtml(m.content)}<div class="msg-meta"><span>${escHtml(name)}</span><span>·</span><span>${timeAgo(m.created_at)}</span></div>`;
   el.appendChild(div);
   if (scroll) scrollChat();
 }
@@ -428,9 +433,7 @@ async function loadProfilePage() {
   document.getElementById('p-name').value = p.full_name || '';
   document.getElementById('p-company').value = p.company || '';
   document.getElementById('p-email').value = p.email || '';
-  const big = document.getElementById('profile-avatar-big');
-  if (p.avatar_url) { big.innerHTML = `<img src="${p.avatar_url}" alt="av" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; big.textContent = ''; }
-  else { big.innerHTML = ''; big.textContent = getInitials(p.full_name || p.email); }
+  setAvatar('profile-avatar-big', p.avatar_url, getInitials(p.full_name || p.email));
 }
 
 async function saveProfile() {
@@ -459,7 +462,7 @@ async function uploadAvatar(input) {
   setAvatar('nav-av', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
   setAvatar('d-av', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
   const big = document.getElementById('profile-avatar-big');
-  if (big) { big.innerHTML = `<img src="${urlDisplay}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; }
+  if (big) setAvatar('profile-avatar-big', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
   showToast('Foto atualizada!', 'success');
 }
 
@@ -738,7 +741,7 @@ function chLabel(c) { return { email: '✉ E-mail', whatsapp: '💬 WhatsApp', o
 function stBadge(s) { const m = { open: ['dbadge-open', 'Aberto'], in_progress: ['dbadge-progress', 'Em andamento'], resolved: ['dbadge-resolved', 'Resolvido'] }; const [cls, lbl] = m[s] || ['', '']; return `<span class="dbadge ${cls}">● ${lbl}</span>`; }
 function fileIcon(m) { if (!m) return '📄'; if (m.startsWith('image')) return '🖼️'; if (m.includes('pdf')) return '📕'; if (m.includes('sheet') || m.includes('excel')) return '📊'; if (m.includes('word')) return '📝'; return '📄'; }
 function formatBytes(b) { if (!b) return ''; if (b < 1024) return b + 'B'; if (b < 1048576) return (b / 1024).toFixed(1) + 'KB'; return (b / 1048576).toFixed(1) + 'MB'; }
-function escHtml(s) { if (!s) return ''; return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function escHtml(s) { if (!s) return ''; return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
 let toastTimer;
 function showToast(msg, type = '') {
