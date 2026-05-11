@@ -865,6 +865,7 @@ const hamburger = document.getElementById('hamburger'), mobileMenu = document.ge
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('open');
   mobileMenu.classList.toggle('open');
+  document.getElementById('mmBackdrop').classList.toggle('open');
   const isOpen = mobileMenu.classList.contains('open');
   document.body.style.overflow = isOpen ? 'hidden' : '';
   hamburger.setAttribute('aria-expanded', isOpen);
@@ -872,6 +873,7 @@ hamburger.addEventListener('click', () => {
 document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => {
   hamburger.classList.remove('open');
   mobileMenu.classList.remove('open');
+  document.getElementById('mmBackdrop').classList.remove('open');
   document.body.style.overflow = '';
 }));
 
