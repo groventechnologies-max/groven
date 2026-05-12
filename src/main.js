@@ -1,8 +1,48 @@
 import { createClient } from '@supabase/supabase-js';
 import './style.css';
 
-const SUPA_URL = import.meta.env.VITE_SUPA_URL;
-const SUPA_KEY = import.meta.env.VITE_SUPA_KEY;
+history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+// ── Intro splash ──────────────────────────────────────────────────────────
+(function initIntro() {
+  document.body.style.overflow = 'hidden';
+  const intro = document.getElementById('intro');
+  setTimeout(() => document.querySelector('.ilb1')?.classList.add('go'), 80);
+  setTimeout(() => document.querySelector('.ilb2')?.classList.add('go'), 230);
+  setTimeout(() => document.querySelector('.ilb3')?.classList.add('go'), 400);
+  setTimeout(() => document.querySelector('.intro-name')?.classList.add('show'), 620);
+  setTimeout(() => document.querySelector('.intro-tagline')?.classList.add('show'), 830);
+  setTimeout(() => {
+    intro?.classList.add('exit');
+    document.body.style.overflow = '';
+    setTimeout(() => intro?.remove(), 780);
+  }, 2100);
+})();
+
+// ── Typewriter ────────────────────────────────────────────────────────────
+(function initTypewriter() {
+  const phrases = ['em outro nível.', 'mais produtivo.', 'mais organizado.', 'mais lucrativo.'];
+  let pi = 0, ci = 0, erasing = false;
+  const el = document.getElementById('tw-text');
+  if (!el) return;
+  function tick() {
+    const phrase = phrases[pi];
+    if (!erasing) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) { erasing = true; setTimeout(tick, 2400); return; }
+      setTimeout(tick, 72);
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) { erasing = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 320); return; }
+      setTimeout(tick, 38);
+    }
+  }
+  setTimeout(tick, 150);
+})();
+
+const SUPA_URL = (import.meta.env.VITE_SUPABASE_URL || '').trim();
+const SUPA_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
 const sb = createClient(SUPA_URL, SUPA_KEY);
 
 let currentUser = null, currentProfile = null, pendingAction = null,
@@ -26,12 +66,6 @@ function scrollToSection(id) { document.getElementById(id)?.scrollIntoView({ beh
 function closeDash() {
   const o = document.getElementById('dashOverlay');
   if (o) { o.classList.remove('open'); document.body.style.overflow = ''; }
-}
-
-function setSidebarVisible(id, visible) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = !visible ? 'none' : (window.matchMedia('(max-width:768px)').matches ? 'flex' : 'block');
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
@@ -63,13 +97,8 @@ function getInitials(s) {
 function setAvatar(id, url, ini) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.innerHTML = '';
-  if (url && /^https?:\/\//.test(url)) {
-    const img = document.createElement('img');
-    img.src = url; img.alt = 'av';
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%';
-    el.appendChild(img);
-  } else { el.textContent = ini; }
+  if (url) { el.innerHTML = `<img src="${url}" alt="av" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; el.textContent = ''; }
+  else { el.innerHTML = ''; el.textContent = ini; }
 }
 
 function updateNavState() {
@@ -81,7 +110,7 @@ function updateNavState() {
   setAvatar('nav-av', p.avatar_url, ini);
   document.getElementById('nav-nm').textContent = p.full_name?.split(' ')[0] || p.email;
   document.getElementById('mobile-auth-link').style.display = 'none';
-  document.getElementById('mobile-dash-link').style.display = 'flex';
+  document.getElementById('mobile-dash-link').style.display = 'block';
 }
 
 // ── Notifications ─────────────────────────────────────────────────────────
@@ -97,8 +126,6 @@ function subscribeNotifications() {
 
 async function triggerEmail(userId, type, message, contactId) {
   try {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) return;
     let contact_subject = '';
     if (contactId) {
       const { data } = await sb.from('contacts').select('subject').eq('id', contactId).single();
@@ -111,7 +138,7 @@ async function triggerEmail(userId, type, message, contactId) {
     };
     await fetch(`${SUPA_URL}/functions/v1/send-notification-email`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPA_KEY}` },
       body: JSON.stringify({ user_id: userId, type, subject: subjectMap[type] || 'Notificação Groven', message, contact_subject })
     });
   } catch (e) { console.log('Email trigger error:', e); }
@@ -174,7 +201,7 @@ function appendMessage(m, scroll = true) {
   const name = mine ? 'Você' : (m.profiles?.full_name || 'Suporte');
   const div = document.createElement('div');
   div.className = `msg-bubble ${mine ? 'mine' : 'theirs'}`;
-  div.innerHTML = `${escHtml(m.content)}<div class="msg-meta"><span>${escHtml(name)}</span><span>·</span><span>${timeAgo(m.created_at)}</span></div>`;
+  div.innerHTML = `${escHtml(m.content)}<div class="msg-meta"><span>${name}</span><span>·</span><span>${timeAgo(m.created_at)}</span></div>`;
   el.appendChild(div);
   if (scroll) scrollChat();
 }
@@ -289,7 +316,7 @@ async function doLogout() {
   currentUser = null; currentProfile = null;
   document.getElementById('nav-login-btn').style.display = '';
   document.getElementById('nav-user-state').style.display = 'none';
-  document.getElementById('mobile-auth-link').style.display = 'flex';
+  document.getElementById('mobile-auth-link').style.display = 'block';
   document.getElementById('mobile-dash-link').style.display = 'none';
   closeDash();
 }
@@ -306,13 +333,13 @@ function openDash() {
   rp.textContent = p.role === 'admin' ? 'Admin' : 'Cliente';
   rp.className = 'role-pill ' + (p.role === 'admin' ? 'role-admin' : 'role-client');
   if (p.role === 'admin') {
-    setSidebarVisible('sidebar-client', false);
-    setSidebarVisible('sidebar-admin', true);
+    document.getElementById('sidebar-client').style.display = 'none';
+    document.getElementById('sidebar-admin').style.display = 'block';
     ['page-overview', 'page-contacts', 'page-projects', 'page-profile', 'page-notifications'].forEach(id => document.getElementById(id).style.display = 'none');
     showAdminPage('contacts');
   } else {
-    setSidebarVisible('sidebar-client', true);
-    setSidebarVisible('sidebar-admin', false);
+    document.getElementById('sidebar-client').style.display = 'block';
+    document.getElementById('sidebar-admin').style.display = 'none';
     ['admin-contacts-page', 'admin-clients-page', 'admin-projects-page'].forEach(id => document.getElementById(id).style.display = 'none');
     document.getElementById('d-greeting').textContent = `Olá, ${p.full_name?.split(' ')[0] || 'bem-vindo'}!`;
     showDashPage('overview');
@@ -424,7 +451,7 @@ function renderAdminProjectCard(p) {
     <div class="progress-label"><span>Progresso</span><span>${p.progress}%</span></div>
     ${steps.length ? `<div class="project-steps">${steps.map(s => `<div class="project-step-item"><div class="step-check ${s.done ? 'done' : ''}">${s.done ? '✓' : ''}</div><span style="${s.done ? 'text-decoration:line-through;color:var(--gray)' : ''}">${escHtml(s.title)}</span></div>`).join('')}</div>` : ''}
     <div class="project-meta">${p.deadline ? `<div class="project-meta-item">📅 Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item">📋 ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
-    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="dbtn-sm" onclick="openEditProject('${p.id}')">✏️ Editar</button><button class="dbtn-sm" style="color:var(--red);border-color:rgba(248,113,113,0.2)" onclick="adminDeleteProject(this)" data-id="${p.id}" data-title="${escHtml(p.title)}">Remover</button></div>
+    <div style="margin-top:12px"><button class="dbtn-sm" onclick="openEditProject('${p.id}')">✏️ Editar</button></div>
   </div>`;
 }
 
@@ -433,7 +460,9 @@ async function loadProfilePage() {
   document.getElementById('p-name').value = p.full_name || '';
   document.getElementById('p-company').value = p.company || '';
   document.getElementById('p-email').value = p.email || '';
-  setAvatar('profile-avatar-big', p.avatar_url, getInitials(p.full_name || p.email));
+  const big = document.getElementById('profile-avatar-big');
+  if (p.avatar_url) { big.innerHTML = `<img src="${p.avatar_url}" alt="av" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; big.textContent = ''; }
+  else { big.innerHTML = ''; big.textContent = getInitials(p.full_name || p.email); }
 }
 
 async function saveProfile() {
@@ -462,7 +491,7 @@ async function uploadAvatar(input) {
   setAvatar('nav-av', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
   setAvatar('d-av', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
   const big = document.getElementById('profile-avatar-big');
-  if (big) setAvatar('profile-avatar-big', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
+  if (big) { big.innerHTML = `<img src="${urlDisplay}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; }
   showToast('Foto atualizada!', 'success');
 }
 
@@ -544,21 +573,6 @@ async function confirmDelete() {
   closeEdit('deleteConfirm');
   loadAdminContacts();
   showToast('Contato removido.', 'success');
-}
-
-function adminDeleteProject(btn) {
-  document.getElementById('del-project-id').value = btn.dataset.id;
-  document.getElementById('del-project-title').textContent = '"' + btn.dataset.title + '"';
-  document.getElementById('deleteProjectConfirm').classList.add('open');
-}
-
-async function confirmDeleteProject() {
-  const id = document.getElementById('del-project-id').value;
-  await sb.from('project_steps').delete().eq('project_id', id);
-  await sb.from('projects').delete().eq('id', id);
-  closeEdit('deleteProjectConfirm');
-  loadAdminProjects();
-  showToast('Projeto removido.', 'success');
 }
 
 // ── Admin clients ─────────────────────────────────────────────────────────
@@ -674,13 +688,11 @@ async function saveProject() {
   else { const { data } = await sb.from('projects').insert({ client_id, title, description, status, progress, deadline }).select().single(); projectId = data.id; }
   await sb.from('project_steps').delete().eq('project_id', projectId);
   const stepEls = document.getElementById('ep-steps').querySelectorAll('div');
-  const stepsData = [];
   for (let i = 0; i < stepEls.length; i++) {
     const t = stepEls[i].querySelector('input[type="text"]')?.value.trim();
     const d = stepEls[i].querySelector('input[type="checkbox"]')?.checked || false;
-    if (t) stepsData.push({ project_id: projectId, title: t, done: d, position: i });
+    if (t) await sb.from('project_steps').insert({ project_id: projectId, title: t, done: d, position: i });
   }
-  if (stepsData.length) await sb.from('project_steps').insert(stepsData);
   if (client_id) { await sb.from('notifications').insert({ user_id: client_id, type: 'project_update', message: `Seu projeto "${title}" foi atualizado!` }); }
   closeEdit('editProject');
   loadAdminProjects();
@@ -741,7 +753,7 @@ function chLabel(c) { return { email: '✉ E-mail', whatsapp: '💬 WhatsApp', o
 function stBadge(s) { const m = { open: ['dbadge-open', 'Aberto'], in_progress: ['dbadge-progress', 'Em andamento'], resolved: ['dbadge-resolved', 'Resolvido'] }; const [cls, lbl] = m[s] || ['', '']; return `<span class="dbadge ${cls}">● ${lbl}</span>`; }
 function fileIcon(m) { if (!m) return '📄'; if (m.startsWith('image')) return '🖼️'; if (m.includes('pdf')) return '📕'; if (m.includes('sheet') || m.includes('excel')) return '📊'; if (m.includes('word')) return '📝'; return '📄'; }
 function formatBytes(b) { if (!b) return ''; if (b < 1024) return b + 'B'; if (b < 1048576) return (b / 1024).toFixed(1) + 'KB'; return (b / 1048576).toFixed(1) + 'MB'; }
-function escHtml(s) { if (!s) return ''; return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+function escHtml(s) { if (!s) return ''; return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
 let toastTimer;
 function showToast(msg, type = '') {
@@ -860,6 +872,24 @@ async function sendChatbotMsg() {
 
 function escalatePrompt() { if (!cbEscalated) { cbEscalated = true; document.getElementById('cbEscalate').style.display = 'block'; } }
 
+// ── Portfolio iframe scale ────────────────────────────────────────────────
+function updatePfScale() {
+  const wrap = document.querySelector('.pf-frame-wrap');
+  const iframe = document.querySelector('.pf-iframe');
+  if (!wrap || !iframe) return;
+  const isMobile = window.innerWidth <= 768;
+  const iframeW = isMobile ? 768 : 1440;
+  const iframeH = isMobile ? 1100 : 900;
+  iframe.style.width = iframeW + 'px';
+  iframe.style.height = iframeH + 'px';
+  const scale = wrap.offsetWidth / iframeW;
+  iframe.style.transform = `scale(${scale})`;
+  iframe.style.transformOrigin = 'top left';
+  wrap.style.height = (iframeH * scale) + 'px';
+}
+window.addEventListener('load', updatePfScale);
+window.addEventListener('resize', updatePfScale);
+
 // ── DOM event listeners ───────────────────────────────────────────────────
 document.getElementById('authOverlay').addEventListener('click', e => { if (e.target === document.getElementById('authOverlay')) closeAuth(); });
 document.querySelectorAll('.edit-overlay').forEach(el => el.addEventListener('click', e => { if (e.target === el && el.id !== 'modalThread') el.classList.remove('open'); }));
@@ -868,15 +898,11 @@ const hamburger = document.getElementById('hamburger'), mobileMenu = document.ge
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('open');
   mobileMenu.classList.toggle('open');
-  document.getElementById('mmBackdrop').classList.toggle('open');
-  const isOpen = mobileMenu.classList.contains('open');
-  document.body.style.overflow = isOpen ? 'hidden' : '';
-  hamburger.setAttribute('aria-expanded', isOpen);
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
 });
 document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => {
   hamburger.classList.remove('open');
   mobileMenu.classList.remove('open');
-  document.getElementById('mmBackdrop').classList.remove('open');
   document.body.style.overflow = '';
 }));
 
@@ -904,7 +930,7 @@ Object.assign(window, {
   openEditRole, adminStartChat, confirmAdminStartChat,
   closeThread, sendChatMessage, uploadAttachments,
   openLegalModal, closeLegalModal,
-  closeEdit, saveContact, confirmDelete, adminDeleteProject, confirmDeleteProject,
+  closeEdit, saveContact, confirmDelete,
   saveRole, openNewProject, openEditProject, addStepInput, saveProject,
   saveProfile, uploadAvatar, savePref,
   toggleChat, askSuggestion, sendChatbotMsg,

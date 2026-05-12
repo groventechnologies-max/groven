@@ -17,6 +17,22 @@
 </head>
 <body>
 
+<!-- INTRO SPLASH -->
+<div id="intro">
+  <div class="intro-icon">
+    <div class="ilb ilb1"></div>
+    <div class="ilb ilb2"></div>
+    <div class="ilb ilb3">
+      <div class="intro-arr">
+        <div class="intro-arr-tri"></div>
+        <div class="intro-arr-line"></div>
+      </div>
+    </div>
+  </div>
+  <div class="intro-name">groven</div>
+  <div class="intro-tagline">Platform · Technology</div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <!-- NAV -->
@@ -36,12 +52,14 @@
   </div>
   <ul class="nav-links">
     <li><a href="javascript:void(0)" onclick="scrollToSection('features')">Produto</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollToSection('portfolio')">Portfólio</a></li>
     <li><a href="javascript:void(0)" onclick="scrollToSection('how')">Como funciona</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollToSection('team')">Sobre nós</a></li>
     <li><a href="javascript:void(0)" onclick="scrollToSection('cta')">Contato</a></li>
     <li id="nav-login-btn"><a href="javascript:void(0)" onclick="openAuth()" class="nav-cta">Entrar</a></li>
     <li id="nav-user-state">
       <div class="notif-wrap">
-        <button class="nav-notif-btn" onclick="toggleNotif(event)" title="Notificações" aria-label="Notificações">🔔<span class="notif-badge" id="notif-badge"></span></button>
+        <button class="nav-notif-btn" onclick="toggleNotif(event)" title="Notificações">🔔<span class="notif-badge" id="notif-badge"></span></button>
         <div class="notif-dropdown" id="notifDropdown">
           <div class="notif-header"><span class="notif-header-title">Notificações</span><button class="notif-mark-all" onclick="markAllRead()">Marcar todas como lidas</button></div>
           <div class="notif-list" id="notif-list"><div class="notif-empty">Nenhuma notificação</div></div>
@@ -53,32 +71,24 @@
       <button class="nav-logout-sm" onclick="doLogout()">Sair</button>
     </li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
-
-<!-- MOBILE MENU BACKDROP -->
-<div class="mm-backdrop" id="mmBackdrop" onclick="document.getElementById('hamburger').click()"></div>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <div class="mm-header">
-    <span class="mm-brand">groven</span>
-    <button class="mm-close" onclick="document.getElementById('hamburger').click()" aria-label="Fechar menu">✕</button>
-  </div>
-  <nav class="mm-nav">
-    <a href="javascript:void(0)" class="mm-link mobile-link" onclick="scrollToSection('features')"><span class="mm-label">Produto</span></a>
-    <a href="javascript:void(0)" class="mm-link mobile-link" onclick="scrollToSection('how')"><span class="mm-label">Como funciona</span></a>
-    <a href="javascript:void(0)" class="mm-link mobile-link" onclick="scrollToSection('cta')"><span class="mm-label">Contato</span></a>
-    <a href="javascript:void(0)" id="mobile-auth-link" class="mm-link mobile-link" onclick="openAuth()"><span class="mm-label">Entrar</span></a>
-    <a href="javascript:void(0)" id="mobile-dash-link" class="mm-link mobile-link" style="display:none" onclick="openDash()"><span class="mm-label">Meu painel</span></a>
-  </nav>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('features')">Produto</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('portfolio')">Portfólio</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('how')">Como funciona</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('team')">Sobre nós</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('cta')">Contato</a>
+  <a href="javascript:void(0)" id="mobile-auth-link" class="mobile-cta mobile-link" onclick="openAuth()">Entrar</a>
+  <a href="javascript:void(0)" id="mobile-dash-link" class="mobile-cta mobile-link" style="display:none" onclick="openDash()">Meu painel</a>
 </div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-orb orb1"></div><div class="hero-orb orb2"></div>
-  <div class="hero-badge"><span class="badge-dot"></span>Plataforma all-in-one para negócios</div>
-  <h1 class="hero-title"><span class="line1">Seu negócio</span><span class="line2">em outro nível.</span></h1>
+  <h1 class="hero-title"><span class="line1">Seu negócio</span><span class="line2"><span id="tw-text"></span><span class="tw-cursor"></span></span></h1>
   <p class="hero-sub">ERP, CRM, sites e automações num só lugar. Simples como deve ser, poderoso como você precisa.</p>
   <div class="hero-actions">
     <a href="javascript:void(0)" onclick="handleCtaClick()" class="btn-primary">Comece agora</a>
@@ -105,6 +115,31 @@
   </div>
 </section>
 
+<!-- PORTFOLIO -->
+<section class="portfolio-section" id="portfolio">
+  <div class="portfolio-inner">
+    <div class="reveal"><div class="section-tag">Portfólio</div><h2 class="section-title">Projetos que entregamos.</h2></div>
+    <div class="pf-card reveal">
+      <div class="pf-browser">
+        <div class="pf-bar">
+          <div class="pf-dots"><span class="pfd pfd-r"></span><span class="pfd pfd-y"></span><span class="pfd pfd-g"></span></div>
+          <div class="pf-url">navalhacityoficial.vercel.app</div>
+          <a href="https://navalhacityoficial.vercel.app/" target="_blank" rel="noopener noreferrer" class="pf-open" title="Abrir em nova aba">↗</a>
+        </div>
+        <div class="pf-frame-wrap">
+          <iframe src="https://navalhacityoficial.vercel.app/" class="pf-iframe" title="Navalha City" loading="lazy" scrolling="yes"></iframe>
+        </div>
+      </div>
+      <div class="pf-info">
+        <div class="pf-tags"><span class="pf-tag">Site Institucional</span><span class="pf-tag">Branding</span></div>
+        <div class="pf-name">Navalha City</div>
+        <p class="pf-desc">Site institucional para rede de barbearias premium com 5 unidades. Design sofisticado, otimizado para conversão e experiência mobile-first.</p>
+        <a href="https://navalhacityoficial.vercel.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver projeto ao vivo →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- HOW -->
 <section class="how" id="how">
   <div class="reveal"><div class="section-tag">Como funciona</div><h2 class="section-title">Simples do início ao fim.</h2></div>
@@ -112,6 +147,94 @@
     <div class="step reveal"><div class="step-num">01</div><div class="step-title">Crie sua conta</div><p class="step-desc">Em menos de 2 minutos sua empresa já está dentro da Groven. Sem cartão de crédito, sem burocracia.</p></div>
     <div class="step reveal"><div class="step-num">02</div><div class="step-title">Nos diga o que você quer</div><p class="step-desc">Basta entrar em contato e compartilhar os detalhes do seu negócio. Todo o resto é com a gente — da infraestrutura à personalização completa, com prazo e orçamento transparentes.</p></div>
     <div class="step reveal"><div class="step-num">03</div><div class="step-title">Veja crescer</div><p class="step-desc">Com tudo integrado, você ganha tempo para o que importa — e sua empresa cresce no piloto automático.</p></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" id="team">
+  <div class="reveal"><div class="section-tag">Sobre nós</div><h2 class="section-title">As pessoas por trás da Groven.</h2></div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="team-photo-wrap">
+        <img src="fotos%20dos%20ceo/David%20Romas.jpeg" alt="David Romas" class="team-photo" style="object-position:50% 20%;"/>
+      </div>
+      <div class="team-info">
+        <div class="team-name">David Romas</div>
+        <div class="team-role">Co-founder &amp; Dev Lead</div>
+        <p class="team-bio">O arquiteto das ideias. Transforma café e linhas de código em produtos que funcionam de verdade — de ponta a ponta. Se tem bug às 2h da manhã, ele já está acordado.</p>
+        <div class="team-stack">
+          <span class="team-stack-label">Stack</span>
+          <div class="team-tags">
+            <span class="team-tag">JavaScript</span>
+            <span class="team-tag">Python</span>
+            <span class="team-tag">SQL</span>
+            <span class="team-tag">Supabase</span>
+          </div>
+        </div>
+        <div class="team-stack">
+          <span class="team-stack-label">Especialidades</span>
+          <div class="team-tags">
+            <span class="team-tag">Full-stack</span>
+            <span class="team-tag">Data Engineering</span>
+            <span class="team-tag">IA aplicada ao produto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo-wrap">
+        <img src="fotos%20dos%20ceo/filipe%20robson.png" alt="Filipe Robson" class="team-photo" style="object-position:50% 10%;"/>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Filipe Robson</div>
+        <div class="team-role">Co-founder &amp; Tech Architect</div>
+        <p class="team-bio">O cara que pensa no sistema antes de escrever a primeira linha. Obcecado com escalabilidade, segurança e fazer o servidor aguentar o tranco quando a coisa escala.</p>
+        <div class="team-stack">
+          <span class="team-stack-label">Stack</span>
+          <div class="team-tags">
+            <span class="team-tag">TypeScript</span>
+            <span class="team-tag">Node.js</span>
+            <span class="team-tag">PostgreSQL</span>
+            <span class="team-tag">Docker</span>
+          </div>
+        </div>
+        <div class="team-stack">
+          <span class="team-stack-label">Especialidades</span>
+          <div class="team-tags">
+            <span class="team-tag">Arquitetura de sistemas</span>
+            <span class="team-tag">Segurança &amp; infraestrutura</span>
+            <span class="team-tag">Integrações &amp; APIs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo-wrap">
+        <img src="fotos%20dos%20ceo/Joao%20Paulo.jpeg" alt="João Paulo" class="team-photo"/>
+      </div>
+      <div class="team-info">
+        <div class="team-name">João Paulo</div>
+        <div class="team-role">Co-founder &amp; Product &amp; Growth</div>
+        <p class="team-bio">A ponte entre o código e o cliente. Entende o produto tão bem quanto os devs, mas fala a língua do negócio. É ele quem transforma demanda real em feature que faz sentido.</p>
+        <div class="team-stack">
+          <span class="team-stack-label">Stack</span>
+          <div class="team-tags">
+            <span class="team-tag">React</span>
+            <span class="team-tag">Next.js</span>
+            <span class="team-tag">Tailwind</span>
+            <span class="team-tag">Figma</span>
+          </div>
+        </div>
+        <div class="team-stack">
+          <span class="team-stack-label">Especialidades</span>
+          <div class="team-tags">
+            <span class="team-tag">Estratégia de produto</span>
+            <span class="team-tag">UX &amp; design de interfaces</span>
+            <span class="team-tag">Growth &amp; aquisição</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -123,11 +246,11 @@
     <div class="cf-grid">
       <div class="cf-group">
         <label class="cf-label">Nome</label>
-        <input class="cf-input" type="text" id="cf-name" placeholder="Seu nome" autocomplete="name"/>
+        <input class="cf-input" type="text" id="cf-name" placeholder="Seu nome"/>
       </div>
       <div class="cf-group">
         <label class="cf-label">E-mail</label>
-        <input class="cf-input" type="email" id="cf-email" placeholder="seu@email.com" autocomplete="email"/>
+        <input class="cf-input" type="email" id="cf-email" placeholder="seu@email.com"/>
       </div>
       <div class="cf-group cf-span2">
         <label class="cf-label">Assunto</label>
@@ -184,15 +307,15 @@
     <div id="auth-error" class="auth-error"></div>
     <div id="auth-success" class="auth-success"></div>
     <div id="auth-form-login">
-      <div class="auth-group"><label class="auth-label">E-mail</label><input class="auth-input" type="email" id="l-email" placeholder="seu@email.com" autocomplete="email"/></div>
-      <div class="auth-group"><label class="auth-label">Senha</label><input class="auth-input" type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password"/></div>
+      <div class="auth-group"><label class="auth-label">E-mail</label><input class="auth-input" type="email" id="l-email" placeholder="seu@email.com"/></div>
+      <div class="auth-group"><label class="auth-label">Senha</label><input class="auth-input" type="password" id="l-pass" placeholder="••••••••"/></div>
       <button class="auth-btn" id="btn-login">Entrar</button>
     </div>
     <div id="auth-form-register" style="display:none">
-      <div class="auth-group"><label class="auth-label">Nome completo</label><input class="auth-input" type="text" id="r-name" placeholder="Seu nome" autocomplete="name"/></div>
-      <div class="auth-group"><label class="auth-label">Empresa (opcional)</label><input class="auth-input" type="text" id="r-company" placeholder="Nome da empresa" autocomplete="organization"/></div>
-      <div class="auth-group"><label class="auth-label">E-mail</label><input class="auth-input" type="email" id="r-email" placeholder="seu@email.com" autocomplete="email"/></div>
-      <div class="auth-group"><label class="auth-label">Senha</label><input class="auth-input" type="password" id="r-pass" placeholder="Mínimo 6 caracteres" autocomplete="new-password"/></div>
+      <div class="auth-group"><label class="auth-label">Nome completo</label><input class="auth-input" type="text" id="r-name" placeholder="Seu nome"/></div>
+      <div class="auth-group"><label class="auth-label">Empresa (opcional)</label><input class="auth-input" type="text" id="r-company" placeholder="Nome da empresa"/></div>
+      <div class="auth-group"><label class="auth-label">E-mail</label><input class="auth-input" type="email" id="r-email" placeholder="seu@email.com"/></div>
+      <div class="auth-group"><label class="auth-label">Senha</label><input class="auth-input" type="password" id="r-pass" placeholder="Mínimo 6 caracteres"/></div>
       <button class="auth-btn" id="btn-register">Criar conta</button>
     </div>
   </div>
@@ -441,21 +564,6 @@
     <div class="edit-actions">
       <button class="dbtn" onclick="confirmAdminStartChat()">Iniciar conversa</button>
       <button class="dbtn-outline" onclick="closeEdit('adminStartChatModal')">Cancelar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Delete project confirmation -->
-<div class="edit-overlay" id="deleteProjectConfirm">
-  <div class="edit-box" style="max-width:400px">
-    <div class="edit-title">Tem certeza?</div>
-    <input type="hidden" id="del-project-id"/>
-    <p style="color:var(--gray);font-size:0.88rem;line-height:1.6;margin-bottom:20px">
-      Você está prestes a remover o projeto <strong id="del-project-title" style="color:var(--white)"></strong>. Esta ação não pode ser desfeita.
-    </p>
-    <div class="edit-actions">
-      <button class="dbtn" style="background:var(--red);color:#fff" onclick="confirmDeleteProject()">Sim, remover</button>
-      <button class="dbtn-outline" onclick="closeEdit('deleteProjectConfirm')">Cancelar</button>
     </div>
   </div>
 </div>
