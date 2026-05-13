@@ -41,8 +41,8 @@ window.scrollTo(0, 0);
   setTimeout(tick, 150);
 })();
 
-const SUPA_URL = (import.meta.env.VITE_SUPABASE_URL || '').trim();
-const SUPA_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
+const SUPA_URL = (import.meta.env.VITE_SUPA_URL || import.meta.env.VITE_SUPABASE_URL || '').trim();
+const SUPA_KEY = (import.meta.env.VITE_SUPA_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
 const sb = createClient(SUPA_URL, SUPA_KEY);
 
 let currentUser = null, currentProfile = null, pendingAction = null,
