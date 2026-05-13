@@ -41,8 +41,8 @@ window.scrollTo(0, 0);
   setTimeout(tick, 150);
 })();
 
-const SUPA_URL = (import.meta.env.VITE_SUPA_URL || import.meta.env.VITE_SUPABASE_URL || '').trim();
-const SUPA_KEY = (import.meta.env.VITE_SUPA_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
+const SUPA_URL = 'https://urmzqtldzpinvsmcpjyo.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVybXpxdGxkenBpbnZzbWNwanlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMDEzNTUsImV4cCI6MjA5MzY3NzM1NX0.XlfpM7W2O5QCLgy_zRH5vkKCiHjccpXz60Ak0OQjFsw';
 const sb = createClient(SUPA_URL, SUPA_KEY);
 
 let currentUser = null, currentProfile = null, pendingAction = null,
