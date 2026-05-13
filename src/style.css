@@ -141,7 +141,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 /* ── Portfolio ── */
 .portfolio-section{padding:140px 60px;border-top:1px solid rgba(255,255,255,0.06)}
 .portfolio-inner{max-width:1200px;margin:0 auto}
-.pf-card{display:grid;grid-template-columns:1fr 340px;gap:56px;align-items:start;margin-top:64px}
+.pf-carousel-wrap{position:relative;margin-top:64px}
+.pf-carousel{overflow:hidden}
+.pf-track{display:flex;transition:transform 0.45s cubic-bezier(0.4,0,0.2,1)}
+.pf-card{display:grid;grid-template-columns:1fr 340px;gap:56px;align-items:start;flex:0 0 100%;min-width:0}
+.pf-nav-btn{position:absolute;top:calc(270px);transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;z-index:10}
+.pf-nav-btn:hover{background:rgba(255,255,255,0.14)}
+.pf-prev{left:-22px}
+.pf-next{right:-22px}
+.pf-indicators{display:flex;justify-content:center;gap:8px;margin-top:28px}
+.pf-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);cursor:pointer;border:none;padding:0;transition:background 0.2s,width 0.25s}
+.pf-dot.active{background:var(--white);width:24px;border-radius:4px}
 .pf-browser{background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:14px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5)}
 .pf-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#1a1a1a;border-bottom:1px solid rgba(255,255,255,0.06)}
 .pf-dots{display:flex;gap:6px}
@@ -151,7 +161,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .pf-open{color:rgba(255,255,255,0.25);font-size:0.9rem;text-decoration:none;transition:color 0.2s;line-height:1}
 .pf-open:hover{color:var(--white)}
 .pf-frame-wrap{position:relative;width:100%;height:500px;overflow:hidden}
-.pf-iframe{width:1440px;height:900px;border:none;transform-origin:top left;transform:scale(var(--pf-scale,0.565));pointer-events:auto}
+.pf-iframe{width:1440px;height:3500px;border:none;transform-origin:top left;transform:scale(var(--pf-scale,0.565));pointer-events:none}
+.pf-overlay{position:absolute;inset:0;z-index:1;cursor:ns-resize}
 .pf-info{padding-top:12px}
 .pf-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
 .pf-tag{font-size:0.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:5px 14px}
@@ -357,9 +368,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   .feature-title{font-size:1.25rem}
   .section-title{margin-bottom:56px}
   .portfolio-section{padding:80px 32px}
-  .pf-card{grid-template-columns:1fr;gap:24px;margin-top:40px}
+  .pf-carousel-wrap{margin-top:40px}
+  .pf-card{grid-template-columns:1fr;gap:24px}
   .pf-url{display:none}
   .pf-info{padding-top:0}
+  .pf-nav-btn{display:none}
   .pf-name{font-size:1.7rem}
   .how{padding:80px 32px}
   .steps{grid-template-columns:1fr 1fr;gap:32px;margin-top:48px}
@@ -585,7 +598,8 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   .pref-desc{font-size:0.7rem}
   .dform-grid{gap:10px}
   .portfolio-section{padding:64px 20px}
-  .pf-card{grid-template-columns:1fr;gap:28px;margin-top:40px}
+  .pf-carousel-wrap{margin-top:32px}
+  .pf-card{grid-template-columns:1fr;gap:28px}
   .pf-url{display:none}
   .pf-name{font-size:1.5rem}
   .pf-desc{font-size:0.85rem}

@@ -713,6 +713,12 @@ async function sendContactForm() {
     status.style.display = 'inline';
     return;
   }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.textContent = '⚠ Digite um e-mail válido.';
+    status.style.color = 'var(--yellow)';
+    status.style.display = 'inline';
+    return;
+  }
   btn.disabled = true;
   btn.innerHTML = '<span class="loader-sm"></span>Enviando...';
   status.style.display = 'none';
@@ -795,8 +801,8 @@ function toggleChat() {
   const icon = document.getElementById('cbBtnIcon');
   win.classList.toggle('open', cbOpen);
   icon.innerHTML = cbOpen
-    ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-    : '<svg width="24" height="24" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="22" width="10" height="22" rx="2" fill="rgba(10,10,10,0.28)"/><rect x="15" y="12" width="10" height="32" rx="2" fill="rgba(10,10,10,0.58)"/><rect x="30" y="0" width="10" height="44" rx="2" fill="#0a0a0a"/><polygon points="35,0 29.5,8.5 40.5,8.5" fill="#0a0a0a"/></svg>';
+    ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+    : '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
   document.getElementById('cbBadge').classList.remove('show');
   if (cbOpen && !cbInitialized) {
     cbInitialized = true;
@@ -880,20 +886,73 @@ async function sendChatbotMsg() {
 
 function escalatePrompt() { if (!cbEscalated) { cbEscalated = true; document.getElementById('cbEscalate').style.display = 'block'; } }
 
+// ── Portfolio carousel ────────────────────────────────────────────────────
+let pfIdx = 0;
+function pfGo(idx) {
+  const cards = document.querySelectorAll('.pf-track .pf-card');
+  pfIdx = Math.max(0, Math.min(cards.length - 1, idx));
+  const track = document.getElementById('pfTrack');
+  const carousel = document.querySelector('.pf-carousel');
+  if (track && carousel) track.style.transform = `translateX(-${pfIdx * carousel.offsetWidth}px)`;
+  document.querySelectorAll('.pf-dot').forEach((d, i) => d.classList.toggle('active', i === pfIdx));
+}
+function pfNav(dir) {
+  const count = document.querySelectorAll('.pf-track .pf-card').length;
+  pfGo((pfIdx + dir + count) % count);
+}
+// Swipe support
+(function() {
+  const carousel = document.querySelector('.pf-carousel');
+  if (!carousel) return;
+  let sx = 0;
+  carousel.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+  carousel.addEventListener('touchend', e => {
+    const dx = sx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 48) pfNav(dx > 0 ? 1 : -1);
+  }, { passive: true });
+})();
+
+// ── Portfolio iframe scroll ───────────────────────────────────────────────
+(function initPortfolioScroll() {
+  document.querySelectorAll('.pf-frame-wrap').forEach(wrap => {
+    const iframe = wrap.querySelector('.pf-iframe');
+    const overlay = wrap.querySelector('.pf-overlay');
+    if (!iframe || !overlay) return;
+    let scrollY = 0;
+    function scale() { return wrap.clientWidth / 1440; }
+    function applyScroll() {
+      const sc = scale();
+      const max = Math.max(0, iframe.offsetHeight * sc - wrap.clientHeight);
+      scrollY = Math.max(0, Math.min(max, scrollY));
+      iframe.style.transform = `scale(${sc}) translateY(-${scrollY / sc}px)`;
+    }
+    overlay.addEventListener('wheel', e => { e.preventDefault(); scrollY += e.deltaY; applyScroll(); }, { passive: false });
+    let lastTY = 0;
+    overlay.addEventListener('touchstart', e => { lastTY = e.touches[0].clientY; }, { passive: true });
+    overlay.addEventListener('touchmove', e => { e.preventDefault(); scrollY += lastTY - e.touches[0].clientY; lastTY = e.touches[0].clientY; applyScroll(); }, { passive: false });
+    window.addEventListener('resize', () => { applyScroll(); });
+    applyScroll();
+  });
+})();
+
 // ── Portfolio iframe scale ────────────────────────────────────────────────
 function updatePfScale() {
-  const wrap = document.querySelector('.pf-frame-wrap');
-  const iframe = document.querySelector('.pf-iframe');
-  if (!wrap || !iframe) return;
   const isMobile = window.innerWidth <= 768;
   const iframeW = isMobile ? 768 : 1440;
   const iframeH = isMobile ? 1100 : 900;
-  iframe.style.width = iframeW + 'px';
-  iframe.style.height = iframeH + 'px';
-  const scale = wrap.offsetWidth / iframeW;
-  iframe.style.transform = `scale(${scale})`;
-  iframe.style.transformOrigin = 'top left';
-  wrap.style.height = (iframeH * scale) + 'px';
+  document.querySelectorAll('.pf-frame-wrap').forEach(wrap => {
+    const iframe = wrap.querySelector('.pf-iframe');
+    if (!iframe) return;
+    iframe.style.width = iframeW + 'px';
+    iframe.style.height = iframeH + 'px';
+    const scale = wrap.offsetWidth / iframeW;
+    iframe.style.transform = `scale(${scale})`;
+    iframe.style.transformOrigin = 'top left';
+    wrap.style.height = (iframeH * scale) + 'px';
+  });
+  const track = document.getElementById('pfTrack');
+  const carousel = document.querySelector('.pf-carousel');
+  if (track && carousel) track.style.transform = `translateX(-${pfIdx * carousel.offsetWidth}px)`;
 }
 window.addEventListener('load', updatePfScale);
 window.addEventListener('resize', updatePfScale);
