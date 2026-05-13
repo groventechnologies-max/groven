@@ -217,7 +217,7 @@ function appendAttachment(a, scroll = true) {
   const inner = document.createElement('div');
   inner.style.cssText = 'display:flex;align-items:center;gap:8px;cursor:pointer';
   inner.addEventListener('click', () => { if (safeUrl !== '#') window.open(safeUrl, '_blank', 'noopener,noreferrer'); });
-  inner.innerHTML = `<span style="font-size:1.2rem">${fileIcon(a.mime_type)}</span><div><div style="font-size:0.8rem;font-weight:500">${escHtml(a.file_name)}</div><div style="font-size:0.68rem;color:rgba(255,255,255,0.4)">${formatBytes(a.file_size)} · ⬇ Baixar</div></div>`;
+  inner.innerHTML = `<span style="display:inline-flex;align-items:center;opacity:0.7">${fileIcon(a.mime_type)}</span><div><div style="font-size:0.8rem;font-weight:500">${escHtml(a.file_name)}</div><div style="font-size:0.68rem;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:3px">${formatBytes(a.file_size)} · <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Baixar</div></div>`;
   const meta = document.createElement('div');
   meta.className = 'msg-meta';
   meta.innerHTML = `<span>${escHtml(name)}</span><span>·</span><span>${timeAgo(a.created_at)}</span>`;
@@ -389,7 +389,7 @@ async function loadClientOverview() {
 async function loadClientContacts() {
   const { data } = await sb.from('contacts').select('*').eq('client_id', currentUser.id).order('created_at', { ascending: false });
   const tbody = document.getElementById('d-client-tbody');
-  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📭</div>Nenhum contato ainda.</div></td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>Nenhum contato ainda.</div></td></tr>`; return; }
   tbody.innerHTML = data.map(x => `<tr>
     <td>${escHtml(x.subject)}</td><td>${chLabel(x.channel)}</td><td>${stBadge(x.status)}</td>
     <td style="color:var(--gray);white-space:nowrap">${fmtDate(x.created_at)}</td>
@@ -420,7 +420,7 @@ function clientOpenChat(btn) {
 async function loadClientProjects() {
   const { data } = await sb.from('projects').select('*,project_steps(*)').eq('client_id', currentUser.id).order('created_at', { ascending: false });
   const el = document.getElementById('d-projects-list');
-  if (!data?.length) { el.innerHTML = `<div class="empty-state"><div class="empty-icon">🚀</div>Nenhum projeto ainda.</div>`; return; }
+  if (!data?.length) { el.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>Nenhum projeto ainda.</div>`; return; }
   el.innerHTML = data.map(p => renderProjectCard(p)).join('');
 }
 
@@ -434,7 +434,7 @@ function renderProjectCard(p) {
     <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progress}%"></div></div>
     <div class="progress-label"><span>Progresso</span><span>${p.progress}%</span></div>
     ${steps.length ? `<div class="project-steps">${steps.map(s => `<div class="project-step-item"><div class="step-check ${s.done ? 'done' : ''}">${s.done ? '✓' : ''}</div><span style="${s.done ? 'text-decoration:line-through;color:var(--gray)' : ''}">${escHtml(s.title)}</span></div>`).join('')}</div>` : ''}
-    <div class="project-meta">${p.deadline ? `<div class="project-meta-item">📅 Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item">📋 ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
+    <div class="project-meta">${p.deadline ? `<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
   </div>`;
 }
 
@@ -444,14 +444,14 @@ function renderAdminProjectCard(p) {
   const [sl, sc] = sm[p.status] || ['—', 'var(--gray)'];
   const steps = p.project_steps || [];
   return `<div class="project-card">
-    <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px">👤 ${escHtml(clientName)}</div>
+    <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px;display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${escHtml(clientName)}</div>
     <div class="project-header"><div class="project-title-text">${escHtml(p.title)}</div><span class="dbadge" style="background:${sc}22;color:${sc};border:1px solid ${sc}44">${sl}</span></div>
     ${p.description ? `<div class="project-desc">${escHtml(p.description)}</div>` : ''}
     <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progress}%"></div></div>
     <div class="progress-label"><span>Progresso</span><span>${p.progress}%</span></div>
     ${steps.length ? `<div class="project-steps">${steps.map(s => `<div class="project-step-item"><div class="step-check ${s.done ? 'done' : ''}">${s.done ? '✓' : ''}</div><span style="${s.done ? 'text-decoration:line-through;color:var(--gray)' : ''}">${escHtml(s.title)}</span></div>`).join('')}</div>` : ''}
-    <div class="project-meta">${p.deadline ? `<div class="project-meta-item">📅 Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item">📋 ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
-    <div style="margin-top:12px"><button class="dbtn-sm" onclick="openEditProject('${p.id}')">✏️ Editar</button></div>
+    <div class="project-meta">${p.deadline ? `<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
+    <div style="margin-top:12px"><button class="dbtn-sm" onclick="openEditProject('${p.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editar</button></div>
   </div>`;
 }
 
@@ -514,12 +514,12 @@ async function loadAdminContacts() {
   const tbody = document.getElementById('d-admin-contacts');
   tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--gray)"><span class="loader-sm loader-sm-w"></span> Carregando...</td></tr>`;
   const { data, error } = await sb.from('contacts').select('*,profiles(full_name,email)').order('created_at', { ascending: false });
-  if (error) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">⚠️</div>Erro: ${escHtml(error.message)}</div></td></tr>`; return; }
+  if (error) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>Erro: ${escHtml(error.message)}</div></td></tr>`; return; }
   const { data: unreadMsgs } = await sb.from('messages').select('contact_id').eq('read_by_admin', false);
   const unreadMap = {};
   unreadMsgs?.forEach(m => { unreadMap[m.contact_id] = (unreadMap[m.contact_id] || 0) + 1; });
   tbody.innerHTML = !data?.length
-    ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div>Nenhum contato.</div></td></tr>`
+    ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>Nenhum contato.</div></td></tr>`
     : data.map(c => {
         const unread = unreadMap[c.id] || 0;
         const badge = unread > 0 ? `<span style="position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:0.6rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;padding:0 3px">${unread > 9 ? '+9' : unread}</span>` : '';
@@ -580,7 +580,7 @@ async function loadAdminClients() {
   const { data } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
   const tbody = document.getElementById('d-admin-clients');
   tbody.innerHTML = !data?.length
-    ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👤</div>Nenhum cliente.</div></td></tr>`
+    ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Nenhum cliente.</div></td></tr>`
     : data.map(c => {
         const avatarEl = c.avatar_url
           ? `<img src="${c.avatar_url}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--border)"/>`
@@ -637,7 +637,7 @@ async function confirmAdminStartChat() {
 async function loadAdminProjects() {
   const { data } = await sb.from('projects').select('*,profiles(full_name,email),project_steps(*)').order('created_at', { ascending: false });
   const el = document.getElementById('d-admin-projects-list');
-  if (!data?.length) { el.innerHTML = `<div class="empty-state"><div class="empty-icon">🚀</div>Nenhum projeto.</div>`; return; }
+  if (!data?.length) { el.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>Nenhum projeto.</div>`; return; }
   el.innerHTML = data.map(p => renderAdminProjectCard(p)).join('');
 }
 
@@ -749,9 +749,15 @@ function showAuthSuccess(msg) { const e = document.getElementById('auth-success'
 function clearAuthMsgs() { document.getElementById('auth-error').style.display = 'none'; document.getElementById('auth-success').style.display = 'none'; }
 function fmtDate(s) { return new Date(s).toLocaleDateString('pt-BR'); }
 function timeAgo(s) { const d = Date.now() - new Date(s), m = Math.floor(d / 60000); if (m < 1) return 'agora'; if (m < 60) return `${m}min`; const h = Math.floor(m / 60); if (h < 24) return `${h}h`; return `${Math.floor(h / 24)}d`; }
-function chLabel(c) { return { email: '✉ E-mail', whatsapp: '💬 WhatsApp', other: '🔗 Outro', support: '🎧 Suporte' }[c] || c; }
+function chLabel(c) { return { email: 'E-mail', whatsapp: 'WhatsApp', other: 'Outro', support: 'Suporte' }[c] || c; }
 function stBadge(s) { const m = { open: ['dbadge-open', 'Aberto'], in_progress: ['dbadge-progress', 'Em andamento'], resolved: ['dbadge-resolved', 'Resolvido'] }; const [cls, lbl] = m[s] || ['', '']; return `<span class="dbadge ${cls}">● ${lbl}</span>`; }
-function fileIcon(m) { if (!m) return '📄'; if (m.startsWith('image')) return '🖼️'; if (m.includes('pdf')) return '📕'; if (m.includes('sheet') || m.includes('excel')) return '📊'; if (m.includes('word')) return '📝'; return '📄'; }
+function fileIcon(m) {
+  if (m && m.startsWith('image')) return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+  if (m && m.includes('pdf')) return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+  if (m && (m.includes('sheet') || m.includes('excel'))) return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>';
+  if (m && m.includes('word')) return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>';
+}
 function formatBytes(b) { if (!b) return ''; if (b < 1024) return b + 'B'; if (b < 1048576) return (b / 1024).toFixed(1) + 'KB'; return (b / 1048576).toFixed(1) + 'MB'; }
 function escHtml(s) { if (!s) return ''; return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
@@ -788,7 +794,9 @@ function toggleChat() {
   const win = document.getElementById('cbWindow');
   const icon = document.getElementById('cbBtnIcon');
   win.classList.toggle('open', cbOpen);
-  icon.textContent = cbOpen ? '✕' : '💬';
+  icon.innerHTML = cbOpen
+    ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+    : '<svg width="24" height="24" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="22" width="10" height="22" rx="2" fill="rgba(10,10,10,0.28)"/><rect x="15" y="12" width="10" height="32" rx="2" fill="rgba(10,10,10,0.58)"/><rect x="30" y="0" width="10" height="44" rx="2" fill="#0a0a0a"/><polygon points="35,0 29.5,8.5 40.5,8.5" fill="#0a0a0a"/></svg>';
   document.getElementById('cbBadge').classList.remove('show');
   if (cbOpen && !cbInitialized) {
     cbInitialized = true;
