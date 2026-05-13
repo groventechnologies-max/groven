@@ -1002,4 +1002,5 @@ Object.assign(window, {
   saveProfile, uploadAvatar, savePref,
   toggleChat, askSuggestion, sendChatbotMsg,
   sendContactForm,
+  pfNav, pfGo,
 });
