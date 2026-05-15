@@ -4,3 +4,8 @@ dist/
 .env.local
 .env.*.local
 .claude/
+contexto.txt
+bug1.png
+bugdomouse.png
+bugs1.jpeg
+bugs1foto2.jpeg
