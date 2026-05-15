@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  VITE_SUPA_URL = "https://urmzqtldzpinvsmcpjyo.supabase.co"
+  VITE_SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVybXpxdGxkenBpbnZzbWNwanlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMDEzNTUsImV4cCI6MjA5MzY3NzM1NX0.XlfpM7W2O5QCLgy_zRH5vkKCiHjccpXz60Ak0OQjFsw"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://urmzqtldzpinvsmcpjyo.supabase.co; connect-src 'self' https://urmzqtldzpinvsmcpjyo.supabase.co wss://urmzqtldzpinvsmcpjyo.supabase.co; object-src 'none'; base-uri 'self'; frame-ancestors 'none';"

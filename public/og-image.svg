@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="100%" style="stop-color:#111111"/>
+    </linearGradient>
+    <linearGradient id="orb1" cx="30%" cy="40%" r="50%" fx="30%" fy="40%" gradientUnits="objectBoundingBox">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.06)"/>
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.04"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle glow orb -->
+  <ellipse cx="200" cy="250" rx="380" ry="280" fill="url(#glow)"/>
+
+  <!-- Border -->
+  <rect x="1" y="1" width="1198" height="628" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- Logo icon (3 bars + arrow) -->
+  <g transform="translate(96, 215)">
+    <rect x="0" y="56" width="22" height="44" rx="4" fill="rgba(255,255,255,0.25)"/>
+    <rect x="30" y="32" width="22" height="68" rx="4" fill="rgba(255,255,255,0.55)"/>
+    <rect x="60" y="0" width="22" height="100" rx="4" fill="#ffffff"/>
+    <polygon points="71,0 60,16 82,16" fill="#ffffff"/>
+  </g>
+
+  <!-- Logo wordmark -->
+  <text x="216" y="280" font-family="'Georgia', serif" font-size="64" font-weight="700" letter-spacing="-2" fill="#ffffff">groven</text>
+
+  <!-- Tagline below logo -->
+  <text x="218" y="316" font-family="'Arial', sans-serif" font-size="16" letter-spacing="4" fill="rgba(255,255,255,0.35)" text-transform="uppercase">PLATFORM · TECHNOLOGY</text>
+
+  <!-- Divider -->
+  <line x1="96" y1="358" x2="400" y2="358" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Main headline -->
+  <text x="96" y="420" font-family="'Georgia', serif" font-size="52" font-weight="700" letter-spacing="-1.5" fill="#ffffff">Seu negócio em outro nível.</text>
+
+  <!-- Sub -->
+  <text x="96" y="468" font-family="'Arial', sans-serif" font-size="22" fill="rgba(255,255,255,0.45)">ERP · CRM · Sites · Automações</text>
+
+  <!-- CTA chip -->
+  <rect x="96" y="506" width="220" height="44" rx="22" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <text x="206" y="534" font-family="'Arial', sans-serif" font-size="15" fill="rgba(255,255,255,0.6)" text-anchor="middle">groventech.com.br</text>
+
+  <!-- Right side decorative stats -->
+  <g transform="translate(740, 180)">
+    <rect x="0" y="0" width="360" height="90" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="28" y="38" font-family="'Georgia', serif" font-size="32" font-weight="700" fill="#ffffff">15 dias</text>
+    <text x="28" y="62" font-family="'Arial', sans-serif" font-size="14" fill="rgba(255,255,255,0.4)">média de entrega</text>
+
+    <rect x="0" y="106" width="360" height="90" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="28" y="144" font-family="'Georgia', serif" font-size="32" font-weight="700" fill="#ffffff">100%</text>
+    <text x="28" y="168" font-family="'Arial', sans-serif" font-size="14" fill="rgba(255,255,255,0.4)">integrado</text>
+
+    <rect x="0" y="212" width="360" height="90" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <text x="28" y="250" font-family="'Georgia', serif" font-size="32" font-weight="700" fill="#ffffff">Zero</text>
+    <text x="28" y="274" font-family="'Arial', sans-serif" font-size="14" fill="rgba(255,255,255,0.4)">complexidade</text>
+  </g>
+</svg>

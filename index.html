@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Groven</title>
+<meta name="description" content="Groven — Plataforma all-in-one de ERP, CRM, sites e automações para microempresas e autônomos. Simples, integrado e poderoso."/>
+<meta property="og:title" content="Groven — Seu negócio em outro nível"/>
+<meta property="og:description" content="ERP, CRM, sites e automações num só lugar. Simples como deve ser, poderoso como você precisa."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://groventech.com.br"/>
+<meta property="og:image" content="https://groventech.com.br/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Groven — Seu negócio em outro nível"/>
+<meta name="twitter:description" content="ERP, CRM, sites e automações num só lugar."/>
+<meta name="twitter:image" content="https://groventech.com.br/og-image.svg"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Cg transform='translate(12,10)'%3E%3Crect x='0' y='22' width='10' height='18' rx='2' fill='rgba(255,255,255,0.3)'/%3E%3Crect x='14' y='12' width='10' height='28' rx='2' fill='rgba(255,255,255,0.6)'/%3E%3Crect x='28' y='0' width='10' height='40' rx='2' fill='%23ffffff'/%3E%3Cpolygon points='33,0 28,8 38,8' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=Syne:wght@800&display=swap" rel="stylesheet"/>
+<script type="module" src="/src/main.js"></script>
+</head>
+<body>
+
+<!-- INTRO SPLASH -->
+<div id="intro">
+  <div class="intro-icon">
+    <div class="ilb ilb1"></div>
+    <div class="ilb ilb2"></div>
+    <div class="ilb ilb3">
+      <div class="intro-arr">
+        <div class="intro-arr-tri"></div>
+        <div class="intro-arr-line"></div>
+      </div>
+    </div>
+  </div>
+  <div class="intro-name">groven</div>
+  <div class="intro-tagline">Platform · Technology</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="closeDash();window.scrollTo({top:0,behavior:'smooth'});" style="cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo-icon">
+        <div class="lb lb1"></div>
+        <div class="lb lb2"></div>
+        <div class="lb lb3"><div class="aw"><div class="at"></div><div class="as"></div></div></div>
+      </div>
+      <div class="logo-wm">
+        <span class="ln">groven</span>
+        <span class="lt">Platform · Technology</span>
+      </div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="javascript:void(0)" onclick="scrollToSection('features')">Produto</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollToSection('portfolio')">Portfólio</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollToSection('how')">Como funciona</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollToSection('team')">Sobre nós</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollToSection('cta')">Contato</a></li>
+    <li id="nav-login-btn"><a href="javascript:void(0)" onclick="openAuth()" class="nav-cta">Entrar</a></li>
+    <li id="nav-user-state">
+      <div class="notif-wrap">
+        <button class="nav-notif-btn" onclick="toggleNotif(event)" title="Notificações"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-badge" id="notif-badge"></span></button>
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-header"><span class="notif-header-title">Notificações</span><button class="notif-mark-all" onclick="markAllRead()">Marcar todas como lidas</button></div>
+          <div class="notif-list" id="notif-list"><div class="notif-empty">Nenhuma notificação</div></div>
+        </div>
+      </div>
+      <div class="nav-avatar-sm" id="nav-av">?</div>
+      <span class="nav-user-name" id="nav-nm"></span>
+      <a href="javascript:void(0)" onclick="openDash()" class="nav-dash-btn">Meu painel</a>
+      <button class="nav-logout-sm" onclick="doLogout()">Sair</button>
+    </li>
+  </ul>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('features')">Produto</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('portfolio')">Portfólio</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('how')">Como funciona</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('team')">Sobre nós</a>
+  <a href="javascript:void(0)" class="mobile-link" onclick="scrollToSection('cta')">Contato</a>
+  <a href="javascript:void(0)" id="mobile-auth-link" class="mobile-cta mobile-link" onclick="openAuth()">Entrar</a>
+  <a href="javascript:void(0)" id="mobile-dash-link" class="mobile-cta mobile-link" style="display:none" onclick="openDash()">Meu painel</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-orb orb1"></div><div class="hero-orb orb2"></div>
+  <h1 class="hero-title"><span class="line1">Seu negócio</span><span class="line2"><span id="tw-text"></span><span class="tw-cursor"></span></span></h1>
+  <p class="hero-sub">ERP, CRM, sites e automações num só lugar. Simples como deve ser, poderoso como você precisa.</p>
+  <div class="hero-actions">
+    <a href="javascript:void(0)" onclick="handleCtaClick()" class="btn-primary">Comece agora</a>
+    <a href="javascript:void(0)" onclick="scrollToSection('features')" class="btn-ghost">Ver como funciona →</a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div></div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item reveal"><div class="stat-num">15 dias</div><div class="stat-label">média de entrega</div></div>
+  <div class="stat-item reveal"><div class="stat-num">100%</div><div class="stat-label">integrado</div></div>
+  <div class="stat-item reveal"><div class="stat-num">Zero</div><div class="stat-label">complexidade</div></div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="reveal"><div class="section-tag">Produto</div><h2 class="section-title">Tudo que sua empresa precisa para crescer.</h2></div>
+  <div class="features-grid">
+    <div class="feature-card reveal"><div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><div class="feature-title">ERP inteligente</div><p class="feature-desc">Gestão financeira, estoque, compras e relatórios em tempo real. Visibilidade total do seu negócio num painel limpo e direto.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="feature-title">CRM automatizado</div><p class="feature-desc">Clientes entram no seu pipeline automaticamente. Acompanhe cada etapa da jornada sem esforço manual — a Groven faz por você.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="feature-title">Sites sob medida</div><p class="feature-desc">Desenvolvemos o site da sua empresa do zero — design personalizado, focado em conversão e entregue em dias, não meses.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="feature-title">Automação de mensagens</div><p class="feature-desc">WhatsApp, e-mail e notificações no piloto automático. Atenda mais, trabalhe menos — sem perder o toque humano.</p></div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio-section" id="portfolio">
+  <div class="portfolio-inner">
+    <div class="reveal"><div class="section-tag">Portfólio</div><h2 class="section-title">Projetos que entregamos.</h2></div>
+    <div class="pf-carousel-wrap reveal">
+      <div class="pf-carousel">
+        <div class="pf-track" id="pfTrack">
+          <!-- Slide 1: Navalha City -->
+          <div class="pf-card">
+            <div class="pf-browser">
+              <div class="pf-bar">
+                <div class="pf-dots"><span class="pfd pfd-r"></span><span class="pfd pfd-y"></span><span class="pfd pfd-g"></span></div>
+                <div class="pf-url">navalhacityoficial.vercel.app</div>
+                <a href="https://navalhacityoficial.vercel.app/" target="_blank" rel="noopener noreferrer" class="pf-open" title="Abrir em nova aba">↗</a>
+              </div>
+              <div class="pf-frame-wrap">
+                <div class="pf-skeleton"></div>
+                <iframe src="https://navalhacityoficial.vercel.app/" class="pf-iframe" title="Navalha City" loading="lazy" onload="this.classList.add('loaded')"></iframe>
+                <div class="pf-overlay"></div>
+              </div>
+            </div>
+            <div class="pf-info">
+              <div class="pf-tags"><span class="pf-tag">Site Institucional</span><span class="pf-tag">Branding</span></div>
+              <div class="pf-name">Navalha City</div>
+              <p class="pf-desc">Site institucional para rede de barbearias premium com 5 unidades. Design sofisticado, otimizado para conversão e experiência mobile-first.</p>
+              <div class="pf-delivery"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Entregue em 15 dias</div>
+              <a href="https://navalhacityoficial.vercel.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver projeto ao vivo →</a>
+            </div>
+          </div>
+          <!-- Slide 2: Plein Nutrition -->
+          <div class="pf-card">
+            <div class="pf-browser">
+              <div class="pf-bar">
+                <div class="pf-dots"><span class="pfd pfd-r"></span><span class="pfd pfd-y"></span><span class="pfd pfd-g"></span></div>
+                <div class="pf-url">plein-nutrition.vercel.app</div>
+                <a href="https://plein-nutrition.vercel.app/" target="_blank" rel="noopener noreferrer" class="pf-open" title="Abrir em nova aba">↗</a>
+              </div>
+              <div class="pf-frame-wrap">
+                <div class="pf-skeleton"></div>
+                <iframe src="https://plein-nutrition.vercel.app/" class="pf-iframe" title="Plein Nutrition" loading="lazy" onload="this.classList.add('loaded')"></iframe>
+                <div class="pf-overlay"></div>
+              </div>
+            </div>
+            <div class="pf-info">
+              <div class="pf-tags"><span class="pf-tag">E-commerce</span><span class="pf-tag">Saúde & Nutrição</span></div>
+              <div class="pf-name">Plein Nutrition</div>
+              <p class="pf-desc">E-commerce para marca de colágeno hidrolisado puro em pó. Design limpo e direto ao ponto, com apresentação clara dos benefícios e foco em conversão.</p>
+              <div class="pf-delivery"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Entregue em 15 dias</div>
+              <a href="https://plein-nutrition.vercel.app/" target="_blank" rel="noopener noreferrer" class="pf-link">Ver projeto ao vivo →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="pf-nav-btn pf-prev" onclick="pfNav(-1)" aria-label="Anterior"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button class="pf-nav-btn pf-next" onclick="pfNav(1)" aria-label="Próximo"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="pf-indicators" id="pfDots">
+      <button class="pf-dot active" onclick="pfGo(0)" aria-label="Projeto 1"></button>
+      <button class="pf-dot" onclick="pfGo(1)" aria-label="Projeto 2"></button>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="reveal"><div class="section-tag">Como funciona</div><h2 class="section-title">Simples do início ao fim.</h2></div>
+  <div class="steps">
+    <div class="step reveal"><div class="step-num">01</div><div class="step-title">Fale com a gente</div><p class="step-desc">Entre em contato pelo formulário ou WhatsApp e nos conte o que você precisa. Sem compromisso, sem burocracia.</p></div>
+    <div class="step reveal"><div class="step-num">02</div><div class="step-title">Receba sua proposta</div><p class="step-desc">Em até 24h enviamos um orçamento detalhado com escopo, prazo e valor. Transparente do início ao fim — sem surpresas.</p></div>
+    <div class="step reveal"><div class="step-num">03</div><div class="step-title">Veja crescer</div><p class="step-desc">Entregamos em média em 15 dias. Você acompanha tudo pelo painel e sai com um produto pronto para converter e crescer.</p></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" id="team">
+  <div class="reveal"><div class="section-tag">Sobre nós</div><h2 class="section-title">As pessoas por trás da Groven.</h2></div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="team-photo-wrap">
+        <img src="fotos%20dos%20ceo/David%20Romas.jpeg" alt="David Romas" class="team-photo" style="object-position:50% 20%;"/>
+      </div>
+      <div class="team-info">
+        <div class="team-name">David Romas</div>
+        <div class="team-role">Co-founder &amp; Dev Lead</div>
+        <p class="team-bio">O arquiteto das ideias. Transforma café e linhas de código em produtos que funcionam de verdade — de ponta a ponta. Se tem bug às 2h da manhã, ele já está acordado.</p>
+        <div class="team-stack">
+          <span class="team-stack-label">Stack</span>
+          <div class="team-tags">
+            <span class="team-tag">JavaScript</span>
+            <span class="team-tag">Python</span>
+            <span class="team-tag">SQL</span>
+            <span class="team-tag">Supabase</span>
+          </div>
+        </div>
+        <div class="team-stack">
+          <span class="team-stack-label">Especialidades</span>
+          <div class="team-tags">
+            <span class="team-tag">Full-stack</span>
+            <span class="team-tag">Data Engineering</span>
+            <span class="team-tag">IA aplicada ao produto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo-wrap">
+        <img src="fotos%20dos%20ceo/filipe%20robson.png" alt="Filipe Robson" class="team-photo" style="object-position:50% 10%;"/>
+      </div>
+      <div class="team-info">
+        <div class="team-name">Filipe Robson</div>
+        <div class="team-role">Co-founder &amp; Tech Architect</div>
+        <p class="team-bio">O cara que pensa no sistema antes de escrever a primeira linha. Obcecado com escalabilidade, segurança e fazer o servidor aguentar o tranco quando a coisa escala.</p>
+        <div class="team-stack">
+          <span class="team-stack-label">Stack</span>
+          <div class="team-tags">
+            <span class="team-tag">TypeScript</span>
+            <span class="team-tag">Node.js</span>
+            <span class="team-tag">PostgreSQL</span>
+            <span class="team-tag">Docker</span>
+          </div>
+        </div>
+        <div class="team-stack">
+          <span class="team-stack-label">Especialidades</span>
+          <div class="team-tags">
+            <span class="team-tag">Arquitetura de sistemas</span>
+            <span class="team-tag">Segurança &amp; infraestrutura</span>
+            <span class="team-tag">Integrações &amp; APIs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo-wrap">
+        <img src="fotos%20dos%20ceo/Joao%20Paulo.jpeg" alt="João Paulo" class="team-photo"/>
+      </div>
+      <div class="team-info">
+        <div class="team-name">João Paulo</div>
+        <div class="team-role">Co-founder &amp; Product &amp; Growth</div>
+        <p class="team-bio">A ponte entre o código e o cliente. Entende o produto tão bem quanto os devs, mas fala a língua do negócio. É ele quem transforma demanda real em feature que faz sentido.</p>
+        <div class="team-stack">
+          <span class="team-stack-label">Stack</span>
+          <div class="team-tags">
+            <span class="team-tag">React</span>
+            <span class="team-tag">Next.js</span>
+            <span class="team-tag">Tailwind</span>
+            <span class="team-tag">Figma</span>
+          </div>
+        </div>
+        <div class="team-stack">
+          <span class="team-stack-label">Especialidades</span>
+          <div class="team-tags">
+            <span class="team-tag">Estratégia de produto</span>
+            <span class="team-tag">UX &amp; design de interfaces</span>
+            <span class="team-tag">Growth &amp; aquisição</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <h2 class="cta-title reveal">Pronto para crescer?</h2>
+  <p class="cta-sub reveal">O acesso à Groven é feito sob consulta. Entre em contato e receba um orçamento personalizado para o seu negócio.</p>
+  <div class="contact-form reveal">
+    <div class="cf-grid">
+      <div class="cf-group">
+        <label class="cf-label">Nome</label>
+        <input class="cf-input" type="text" id="cf-name" placeholder="Seu nome"/>
+      </div>
+      <div class="cf-group">
+        <label class="cf-label">E-mail</label>
+        <input class="cf-input" type="email" id="cf-email" placeholder="seu@email.com"/>
+      </div>
+      <div class="cf-group cf-span2">
+        <label class="cf-label">Assunto</label>
+        <input class="cf-input" type="text" id="cf-subject" placeholder="Ex: Quero um orçamento para minha empresa"/>
+      </div>
+      <div class="cf-group cf-span2">
+        <label class="cf-label">Mensagem</label>
+        <textarea class="cf-input" id="cf-message" placeholder="Descreva o que você precisa..."></textarea>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <button class="btn-primary" id="cf-send" onclick="sendContactForm()">Enviar mensagem</button>
+      <span id="cf-status" style="font-size:0.82rem;display:none"></span>
+    </div>
+    <div style="margin-top:16px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:0.78rem;color:rgba(255,255,255,0.2)">Ou fale direto pelo</span>
+      <a href="https://wa.me/5511941441309" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;padding:6px 14px;border-radius:100px;font-size:0.78rem;text-decoration:none;transition:background 0.2s" onmouseover="this.style.background='rgba(74,222,128,0.18)'" onmouseout="this.style.background='rgba(74,222,128,0.1)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo" style="display:flex;align-items:center;gap:10px">
+    <div class="logo-icon" style="height:28px">
+      <div class="lb lb1" style="height:12px"></div>
+      <div class="lb lb2" style="height:18px"></div>
+      <div class="lb lb3" style="height:26px"><div class="aw" style="top:-6px"><div class="at"></div><div class="as"></div></div></div>
+    </div>
+    <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.5px;background:linear-gradient(135deg,#fff 0%,#666 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent">groven</span>
+  </div>
+  <p class="footer-copy">© 2026 Groven. Todos os direitos reservados.</p>
+  <ul class="footer-links">
+    <li><a href="https://instagram.com/groventech" target="_blank" rel="noopener noreferrer" class="footer-social-link" title="Instagram @groventech"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>@groventech</a></li>
+    <li><a href="javascript:void(0)" onclick="openLegalModal('modalPrivacy')">Privacidade</a></li>
+    <li><a href="javascript:void(0)" onclick="openLegalModal('modalTerms')">Termos</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollToSection('cta')">Contato</a></li>
+  </ul>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-logo" style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <div class="logo-icon" style="height:28px">
+        <div class="lb lb1" style="height:12px"></div>
+        <div class="lb lb2" style="height:18px"></div>
+        <div class="lb lb3" style="height:26px"><div class="aw" style="top:-6px"><div class="at"></div><div class="as"></div></div></div>
+      </div>
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px;color:#fff">groven</span>
+    </div>
+    <p class="auth-sub">Acesse seu portal de atendimento</p>
+    <div class="auth-tabs"><button class="auth-tab active" onclick="switchAuthTab('login')">Entrar</button><button class="auth-tab" onclick="switchAuthTab('register')">Cadastrar</button></div>
+    <div id="auth-error" class="auth-error"></div>
+    <div id="auth-success" class="auth-success"></div>
+    <div id="auth-form-login">
+      <div class="auth-group"><label class="auth-label">E-mail</label><input class="auth-input" type="email" id="l-email" placeholder="seu@email.com"/></div>
+      <div class="auth-group"><label class="auth-label">Senha</label><input class="auth-input" type="password" id="l-pass" placeholder="••••••••"/></div>
+      <button class="auth-btn" id="btn-login">Entrar</button>
+    </div>
+    <div id="auth-form-register" style="display:none">
+      <div class="auth-group"><label class="auth-label">Nome completo</label><input class="auth-input" type="text" id="r-name" placeholder="Seu nome"/></div>
+      <div class="auth-group"><label class="auth-label">Empresa (opcional)</label><input class="auth-input" type="text" id="r-company" placeholder="Nome da empresa"/></div>
+      <div class="auth-group"><label class="auth-label">E-mail</label><input class="auth-input" type="email" id="r-email" placeholder="seu@email.com"/></div>
+      <div class="auth-group"><label class="auth-label">Senha</label><input class="auth-input" type="password" id="r-pass" placeholder="Mínimo 6 caracteres"/></div>
+      <button class="auth-btn" id="btn-register">Criar conta</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash-overlay" id="dashOverlay">
+  <nav class="dash-nav">
+    <div class="dash-nav-logo" onclick="closeDash()" style="cursor:pointer;display:flex;align-items:center;gap:10px">
+      <div class="logo-icon" style="height:28px">
+        <div class="lb lb1" style="height:12px"></div>
+        <div class="lb lb2" style="height:18px"></div>
+        <div class="lb lb3" style="height:26px"><div class="aw" style="top:-6px"><div class="at"></div><div class="as"></div></div></div>
+      </div>
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.5px;color:#fff">groven</span>
+    </div>
+    <div class="dash-nav-right">
+      <div class="dash-user-badge">
+        <div class="dash-avatar" id="d-av">?</div>
+        <span class="dash-uname" id="d-nm"></span>
+        <span class="role-pill" id="d-role"></span>
+      </div>
+      <button class="btn-back" onclick="closeDash()">← Voltar ao site</button>
+      <button class="btn-back" onclick="doLogout()" style="border-color:rgba(248,113,113,0.2);color:var(--red)">Sair</button>
+    </div>
+  </nav>
+  <div class="dash-layout">
+    <div class="dash-sidebar" id="dashSidebar">
+      <div id="sidebar-client">
+        <div class="dash-nav-item active" onclick="showDashPage('overview')" data-page="overview"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>Visão geral</div>
+        <div class="dash-nav-item" onclick="showDashPage('contacts')" data-page="contacts"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Contatos</div>
+        <div class="dash-nav-item" onclick="showDashPage('projects')" data-page="projects"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>Projetos</div>
+        <div class="dash-nav-item" onclick="showDashPage('profile')" data-page="profile"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Perfil</div>
+        <div class="dash-nav-item" onclick="showDashPage('notifications')" data-page="notifications"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>Notificações</div>
+      </div>
+      <div id="sidebar-admin" style="display:none">
+        <div class="dash-nav-item active" onclick="showAdminPage('contacts')" data-apage="contacts"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Contatos</div>
+        <div class="dash-nav-item" onclick="showAdminPage('clients')" data-apage="clients"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Clientes</div>
+        <div class="dash-nav-item" onclick="showAdminPage('projects')" data-apage="projects"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>Projetos</div>
+      </div>
+    </div>
+    <div class="dash-content">
+
+      <!-- OVERVIEW -->
+      <div id="page-overview">
+        <div class="page-title" id="d-greeting">Olá!</div>
+        <div class="page-sub">Bem-vindo ao seu painel Groven.</div>
+        <div class="dstat-row" id="d-client-stats"></div>
+        <div class="dsection">
+          <div class="dsection-head"><div class="dsection-title">Novo contato</div></div>
+          <div class="dsection-body">
+            <div class="dform-grid">
+              <div class="dform-group dspan2"><label class="dlabel">Assunto</label><input class="dash-input" type="text" id="nc-subject" placeholder="Ex: Solicitação de orçamento"/></div>
+              <div class="dform-group"><label class="dlabel">Canal</label><select class="dash-input" id="nc-channel"><option value="support">Suporte</option></select></div>
+              <div class="dform-group dspan2"><label class="dlabel">Mensagem</label><textarea class="dash-input" id="nc-msg" placeholder="Descreva sua solicitação..."></textarea></div>
+            </div>
+            <button class="dbtn" id="btn-send" onclick="sendContact()">Enviar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div id="page-contacts" style="display:none">
+        <div class="page-title">Meus contatos</div>
+        <div class="page-sub">Clique em "Chat" para conversar em tempo real com nossa equipe.</div>
+        <div class="dsection">
+          <div class="table-wrap">
+            <table><thead><tr><th>Assunto</th><th>Canal</th><th>Status</th><th>Data</th><th></th></tr></thead><tbody id="d-client-tbody"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div id="page-projects" style="display:none">
+        <div class="page-title">Meus projetos</div>
+        <div class="page-sub">Acompanhe o andamento dos seus projetos em tempo real.</div>
+        <div id="d-projects-list"></div>
+      </div>
+
+      <!-- PROFILE -->
+      <div id="page-profile" style="display:none">
+        <div class="page-title">Meu perfil</div>
+        <div class="page-sub">Atualize suas informações pessoais.</div>
+        <div class="dsection">
+          <div class="dsection-body">
+            <div class="profile-avatar-zone">
+              <div class="profile-avatar-big" id="profile-avatar-big">?</div>
+              <div>
+                <label style="cursor:pointer"><input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="uploadAvatar(this)"/><span class="dbtn-sm">Alterar foto</span></label>
+                <div class="profile-avatar-hint" style="margin-top:6px">JPG ou PNG, máx 2MB</div>
+              </div>
+            </div>
+            <div class="dform-grid">
+              <div class="dform-group"><label class="dlabel">Nome completo</label><input class="dash-input" type="text" id="p-name"/></div>
+              <div class="dform-group"><label class="dlabel">Empresa</label><input class="dash-input" type="text" id="p-company"/></div>
+              <div class="dform-group dspan2"><label class="dlabel">E-mail</label><input class="dash-input" type="email" id="p-email" disabled style="opacity:0.5;cursor:not-allowed"/></div>
+            </div>
+            <button class="dbtn" onclick="saveProfile()">Salvar alterações</button>
+            <div id="profile-msg" style="margin-top:12px;font-size:0.82rem;display:none"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS SETTINGS -->
+      <div id="page-notifications" style="display:none">
+        <div class="page-title">Notificações</div>
+        <div class="page-sub">Escolha como deseja ser notificado por e-mail.</div>
+        <div class="dsection">
+          <div class="dsection-head"><div class="dsection-title">Preferências de e-mail</div></div>
+          <div class="dsection-body">
+            <div class="pref-row">
+              <div class="pref-info"><div class="pref-title">Mudança de status</div><div class="pref-desc">Receba um e-mail quando o status de um contato for atualizado</div></div>
+              <label class="toggle"><input type="checkbox" id="pref-status" onchange="savePref('notify_status_change',this.checked)"/><span class="toggle-slider"></span></label>
+            </div>
+            <div class="pref-row">
+              <div class="pref-info"><div class="pref-title">Nova mensagem</div><div class="pref-desc">Receba um e-mail quando nossa equipe responder no chat</div></div>
+              <label class="toggle"><input type="checkbox" id="pref-message" onchange="savePref('notify_new_message',this.checked)"/><span class="toggle-slider"></span></label>
+            </div>
+            <div class="pref-row">
+              <div class="pref-info"><div class="pref-title">Atualização de projeto</div><div class="pref-desc">Receba um e-mail quando houver progresso no seu projeto</div></div>
+              <label class="toggle"><input type="checkbox" id="pref-project" onchange="savePref('notify_project_update',this.checked)"/><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: CONTACTS -->
+      <div id="admin-contacts-page" style="display:none">
+        <div class="page-title">Todos os contatos</div>
+        <div class="page-sub">Gerencie e responda contatos de todos os clientes.</div>
+        <div class="dsection">
+          <div class="table-wrap">
+            <table><thead><tr><th>Cliente</th><th>Assunto</th><th>Canal</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead><tbody id="d-admin-contacts"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: CLIENTS -->
+      <div id="admin-clients-page" style="display:none">
+        <div class="page-title">Clientes</div>
+        <div class="page-sub">Todos os clientes cadastrados.</div>
+        <div class="dsection">
+          <div class="table-wrap">
+            <table><thead><tr><th>Cliente</th><th>E-mail</th><th>Empresa</th><th>Função</th><th>Cadastro</th><th>Ações</th></tr></thead><tbody id="d-admin-clients"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: PROJECTS -->
+      <div id="admin-projects-page" style="display:none">
+        <div class="page-title">Projetos</div>
+        <div class="page-sub">Gerencie todos os projetos dos clientes.</div>
+        <button class="dbtn" style="margin-bottom:20px" onclick="openNewProject()">+ Novo projeto</button>
+        <div id="d-admin-projects-list"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CHAT REALTIME -->
+<div class="edit-overlay" id="modalThread">
+  <div class="edit-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div class="edit-title" style="margin-bottom:0" id="thread-title">Chat</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--gray)">
+        <span class="online-dot"></span> Tempo real
+      </div>
+    </div>
+    <div class="chat-container">
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-typing" id="chat-typing"></div>
+      <div class="chat-input-row">
+        <input type="file" id="attach-input" multiple style="display:none" onchange="uploadAttachments(this.files)"/>
+        <button class="chat-send-btn" style="background:rgba(255,255,255,0.08);color:var(--gray);padding:9px 12px;display:inline-flex;align-items:center;justify-content:center" onclick="document.getElementById('attach-input').click()" title="Enviar arquivo"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+        <input class="dash-input" type="text" id="chat-input" placeholder="Digite sua mensagem..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"/>
+        <button class="chat-send-btn" id="btn-chat-send" onclick="sendChatMessage()">Enviar</button>
+      </div>
+    </div>
+    <div class="edit-actions"><button class="dbtn-outline" onclick="closeThread()">Fechar</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Privacidade -->
+<div id="modalPrivacy" style="display:none;position:fixed;inset:0;z-index:600;background:var(--black);overflow-y:auto">
+    <nav style="position:sticky;top:0;background:rgba(10,10,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:20px 48px;z-index:10">
+      <div onclick="closeLegalModal('modalPrivacy')" style="cursor:pointer;display:flex;align-items:center;gap:10px">
+        <div class="logo-icon" style="height:28px"><div class="lb lb1" style="height:12px"></div><div class="lb lb2" style="height:18px"></div><div class="lb lb3" style="height:26px"><div class="aw" style="top:-6px"><div class="at"></div><div class="as"></div></div></div></div>
+        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:#fff">groven</span>
+      </div>
+      <button onclick="closeLegalModal('modalPrivacy')" style="background:none;border:1px solid var(--border);color:var(--gray);font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:8px 18px;border-radius:8px;cursor:pointer">← Voltar</button>
+    </nav>
+    <div style="max-width:720px;margin:0 auto;padding:64px 40px 100px">
+      <p style="font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:16px">Groven · Política de Privacidade</p>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-1px;margin-bottom:12px">Política de Privacidade</h1>
+      <p style="color:var(--gray);font-size:0.85rem;margin-bottom:48px">Última atualização: maio de 2026</p>
+      <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.8;display:flex;flex-direction:column;gap:36px">
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">1. Quem somos</h2><p>A Groven é uma empresa de tecnologia brasileira que oferece soluções de ERP, CRM, desenvolvimento de sites e automações para microempresas e profissionais autônomos. Nosso compromisso com a privacidade dos seus dados é parte fundamental da nossa relação com você.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">2. Quais dados coletamos</h2><p>Ao utilizar nossa plataforma, podemos coletar os seguintes dados:</p><ul style="margin-top:12px;padding-left:20px;display:flex;flex-direction:column;gap:8px"><li><strong style="color:#fff">Dados de cadastro:</strong> nome completo, endereço de e-mail, nome da empresa e senha (armazenada de forma criptografada).</li><li><strong style="color:#fff">Dados de uso:</strong> mensagens trocadas no chat de suporte, arquivos enviados como anexo e histórico de contatos.</li><li><strong style="color:#fff">Dados de perfil:</strong> foto de perfil, se você optar por enviar.</li><li><strong style="color:#fff">Dados técnicos:</strong> endereço IP, tipo de navegador e dispositivo, coletados automaticamente para fins de segurança.</li></ul></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">3. Como usamos seus dados</h2><p>Utilizamos seus dados exclusivamente para:</p><ul style="margin-top:12px;padding-left:20px;display:flex;flex-direction:column;gap:8px"><li>Criar e gerenciar sua conta na plataforma Groven.</li><li>Prestar suporte e responder às suas solicitações de contato.</li><li>Enviar notificações sobre atualizações em projetos e mensagens, conforme suas preferências.</li><li>Melhorar continuamente nossos serviços e a experiência na plataforma.</li><li>Cumprir obrigações legais aplicáveis.</li></ul></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">4. Compartilhamento de dados</h2><p>A Groven não vende, aluga ou compartilha seus dados pessoais com terceiros para fins comerciais. Seus dados podem ser compartilhados apenas com:</p><ul style="margin-top:12px;padding-left:20px;display:flex;flex-direction:column;gap:8px"><li><strong style="color:#fff">Supabase:</strong> plataforma de banco de dados e autenticação utilizada para armazenar suas informações com segurança.</li><li><strong style="color:#fff">Resend:</strong> serviço de envio de e-mails transacionais utilizado para notificações.</li><li><strong style="color:#fff">Autoridades competentes:</strong> quando exigido por lei ou ordem judicial.</li></ul></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">5. Armazenamento e segurança</h2><p>Seus dados são armazenados em servidores seguros com criptografia em trânsito (HTTPS) e em repouso. Utilizamos autenticação robusta e políticas de acesso restrito para proteger suas informações. Senhas nunca são armazenadas em texto simples.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">6. Seus direitos (LGPD)</h2><p>Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você tem direito a:</p><ul style="margin-top:12px;padding-left:20px;display:flex;flex-direction:column;gap:8px"><li>Acessar os dados que temos sobre você.</li><li>Solicitar a correção de dados incorretos ou desatualizados.</li><li>Solicitar a exclusão dos seus dados da nossa plataforma.</li><li>Revogar o consentimento para o uso dos seus dados a qualquer momento.</li><li>Solicitar a portabilidade dos seus dados.</li></ul><p style="margin-top:12px">Para exercer qualquer desses direitos, entre em contato pelo e-mail <a href="mailto:groventecnologies@gmail.com" style="color:#fff">groventecnologies@gmail.com</a>.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">7. Cookies</h2><p>Nossa plataforma pode utilizar cookies de sessão para manter você autenticado. Não utilizamos cookies de rastreamento ou publicidade de terceiros.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">8. Alterações nesta política</h2><p>Esta política pode ser atualizada periodicamente. Em caso de alterações relevantes, notificaremos os usuários cadastrados por e-mail. O uso continuado da plataforma após as alterações implica na aceitação da nova política.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">9. Contato</h2><p>Dúvidas sobre esta política? Entre em contato:<br><a href="mailto:groventecnologies@gmail.com" style="color:#fff">groventecnologies@gmail.com</a><br><a href="https://wa.me/5511941441309" target="_blank" style="color:#fff">+55 11 94144-1309</a></p></div>
+      </div>
+    </div>
+</div>
+
+<!-- MODAL: Termos -->
+<div id="modalTerms" style="display:none;position:fixed;inset:0;z-index:600;background:var(--black);overflow-y:auto">
+    <nav style="position:sticky;top:0;background:rgba(10,10,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:20px 48px;z-index:10">
+      <div onclick="closeLegalModal('modalTerms')" style="cursor:pointer;display:flex;align-items:center;gap:10px">
+        <div class="logo-icon" style="height:28px"><div class="lb lb1" style="height:12px"></div><div class="lb lb2" style="height:18px"></div><div class="lb lb3" style="height:26px"><div class="aw" style="top:-6px"><div class="at"></div><div class="as"></div></div></div></div>
+        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:#fff">groven</span>
+      </div>
+      <button onclick="closeLegalModal('modalTerms')" style="background:none;border:1px solid var(--border);color:var(--gray);font-family:'DM Sans',sans-serif;font-size:0.8rem;padding:8px 18px;border-radius:8px;cursor:pointer">← Voltar</button>
+    </nav>
+    <div style="max-width:720px;margin:0 auto;padding:64px 40px 100px">
+      <p style="font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:16px">Groven · Termos de Uso</p>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-1px;margin-bottom:12px">Termos de Uso</h1>
+      <p style="color:var(--gray);font-size:0.85rem;margin-bottom:48px">Última atualização: maio de 2026</p>
+      <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.8;display:flex;flex-direction:column;gap:36px">
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">1. Aceitação dos termos</h2><p>Ao acessar ou utilizar a plataforma Groven, você concorda com estes Termos de Uso. Caso não concorde com qualquer disposição, recomendamos que não utilize nossos serviços.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">2. Descrição dos serviços</h2><p>A Groven oferece uma plataforma de gestão empresarial que inclui módulos de ERP, CRM, desenvolvimento de sites e automações. O acesso à plataforma é realizado mediante cadastro e aprovação, e os serviços são prestados de forma personalizada conforme o contrato firmado com cada cliente.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">3. Cadastro e conta</h2><p>Para utilizar a plataforma, você deve criar uma conta com informações verdadeiras e atualizadas. Você é responsável por manter a confidencialidade da sua senha e por todas as atividades realizadas na sua conta. Em caso de acesso não autorizado, notifique-nos imediatamente.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">4. Uso aceitável</h2><p>Ao utilizar a plataforma Groven, você concorda em não:</p><ul style="margin-top:12px;padding-left:20px;display:flex;flex-direction:column;gap:8px"><li>Usar a plataforma para fins ilegais ou não autorizados.</li><li>Transmitir conteúdo ofensivo, difamatório, fraudulento ou prejudicial a terceiros.</li><li>Tentar acessar dados de outros usuários sem autorização.</li><li>Interferir no funcionamento normal da plataforma.</li><li>Reproduzir, copiar ou redistribuir qualquer parte da plataforma sem autorização expressa.</li></ul></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">5. Pagamentos e contratação</h2><p>Os valores dos serviços são definidos individualmente em proposta comercial enviada pela Groven. O pagamento pode ser realizado via Pix ou cartão de crédito. Após a confirmação do pagamento, os serviços serão iniciados conforme o cronograma acordado.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">6. Propriedade intelectual</h2><p>Todo o conteúdo da plataforma Groven — incluindo marca, logotipo, design, código-fonte e textos — é propriedade da Groven e protegido pelas leis de propriedade intelectual. Os projetos desenvolvidos para os clientes pertencem ao cliente após a quitação integral do serviço.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">7. Limitação de responsabilidade</h2><p>A Groven não se responsabiliza por danos indiretos, incidentais ou consequentes decorrentes do uso ou da impossibilidade de uso da plataforma. Nos empenhamos em manter a disponibilidade dos serviços, mas não garantimos operação ininterrupta.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">8. Suspensão e encerramento</h2><p>A Groven reserva-se o direito de suspender ou encerrar o acesso de qualquer usuário que viole estes Termos, sem aviso prévio. O usuário também pode solicitar o encerramento da sua conta a qualquer momento pelo e-mail groventecnologies@gmail.com.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">9. Lei aplicável</h2><p>Estes Termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro da comarca de São Paulo/SP para dirimir eventuais conflitos decorrentes destes Termos.</p></div>
+        <div><h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px">10. Contato</h2><p>Dúvidas sobre estes termos? Fale conosco:<br><a href="mailto:groventecnologies@gmail.com" style="color:#fff">groventecnologies@gmail.com</a><br><a href="https://wa.me/5511941441309" target="_blank" style="color:#fff">+55 11 94144-1309</a></p></div>
+      </div>
+    </div>
+</div>
+
+<!-- MODAL: Admin iniciar chat -->
+<div class="edit-overlay" id="adminStartChatModal">
+  <div class="edit-box" style="max-width:440px">
+    <div class="edit-title">Iniciar conversa com <span id="asc-name"></span></div>
+    <input type="hidden" id="asc-client-id"/>
+    <div class="dform-group"><label class="dlabel">Assunto</label><input class="dash-input" type="text" id="asc-subject" placeholder="Ex: Atualização sobre seu projeto"/></div>
+    <div class="dform-group"><label class="dlabel">Mensagem inicial</label><textarea class="dash-input" id="asc-message" placeholder="Digite a primeira mensagem..."></textarea></div>
+    <div class="edit-actions">
+      <button class="dbtn" onclick="confirmAdminStartChat()">Iniciar conversa</button>
+      <button class="dbtn-outline" onclick="closeEdit('adminStartChatModal')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Delete confirmation -->
+<div class="edit-overlay" id="deleteConfirm">
+  <div class="edit-box" style="max-width:400px">
+    <div class="edit-title">Tem certeza?</div>
+    <input type="hidden" id="del-id"/>
+    <p style="color:var(--gray);font-size:0.88rem;line-height:1.6;margin-bottom:20px">
+      Você está prestes a remover o contato <strong id="del-subject" style="color:var(--white)"></strong>. Esta ação não pode ser desfeita.
+    </p>
+    <div class="edit-actions">
+      <button class="dbtn" style="background:var(--red);color:#fff" onclick="confirmDelete()">Sim, remover</button>
+      <button class="dbtn-outline" onclick="closeEdit('deleteConfirm')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Edit contact -->
+<div class="edit-overlay" id="editContact">
+  <div class="edit-box" style="max-width:440px">
+    <div class="edit-title">Editar contato</div>
+    <input type="hidden" id="ec-id"/>
+    <div class="dform-group"><label class="dlabel">Status</label><select class="dash-input" id="ec-status"><option value="open">Aberto</option><option value="in_progress">Em andamento</option><option value="resolved">Resolvido</option></select></div>
+    <div class="dform-group"><label class="dlabel">Notas internas</label><textarea class="dash-input" id="ec-notes"></textarea></div>
+    <div class="edit-actions"><button class="dbtn" onclick="saveContact()">Salvar</button><button class="dbtn-outline" onclick="closeEdit('editContact')">Cancelar</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Edit role -->
+<div class="edit-overlay" id="editRole">
+  <div class="edit-box" style="max-width:360px">
+    <div class="edit-title">Alterar função</div>
+    <input type="hidden" id="er-id"/>
+    <div class="dform-group"><label class="dlabel">Função</label><select class="dash-input" id="er-role"><option value="client">Cliente</option><option value="admin">Admin</option></select></div>
+    <div class="edit-actions"><button class="dbtn" onclick="saveRole()">Salvar</button><button class="dbtn-outline" onclick="closeEdit('editRole')">Cancelar</button></div>
+  </div>
+</div>
+
+<!-- MODAL: Project -->
+<div class="edit-overlay" id="editProject">
+  <div class="edit-box">
+    <div class="edit-title" id="project-modal-title">Novo projeto</div>
+    <input type="hidden" id="ep-id"/>
+    <div class="dform-group"><label class="dlabel">Cliente</label><select class="dash-input" id="ep-client"></select></div>
+    <div class="dform-group"><label class="dlabel">Título</label><input class="dash-input" type="text" id="ep-title"/></div>
+    <div class="dform-group"><label class="dlabel">Descrição</label><textarea class="dash-input" id="ep-desc"></textarea></div>
+    <div class="dform-grid">
+      <div class="dform-group"><label class="dlabel">Status</label><select class="dash-input" id="ep-status"><option value="planning">Planejamento</option><option value="in_progress">Em andamento</option><option value="review">Revisão</option><option value="completed">Concluído</option></select></div>
+      <div class="dform-group"><label class="dlabel">Progresso (%)</label><input class="dash-input" type="number" id="ep-progress" min="0" max="100" value="0"/></div>
+      <div class="dform-group"><label class="dlabel">Prazo</label><input class="dash-input" type="date" id="ep-deadline"/></div>
+    </div>
+    <div class="dform-group">
+      <label class="dlabel">Etapas</label>
+      <div id="ep-steps"></div>
+      <button class="dbtn-sm" style="margin-top:8px" onclick="addStepInput()">+ Etapa</button>
+    </div>
+    <div class="edit-actions"><button class="dbtn" onclick="saveProject()">Salvar</button><button class="dbtn-outline" onclick="closeEdit('editProject')">Cancelar</button></div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<button class="cb-btn" id="cbBtn" onclick="toggleChat()" title="Falar com a Groven">
+  <span id="cbBtnIcon" style="display:flex;align-items:center;justify-content:center">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </span>
+  <span class="cb-badge" id="cbBadge"></span>
+</button>
+
+<div class="cb-window" id="cbWindow">
+  <div class="cb-header">
+    <div class="cb-header-avatar">
+      <svg width="16" height="16" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="22" width="10" height="22" rx="2" fill="rgba(255,255,255,0.3)"/>
+        <rect x="15" y="12" width="10" height="32" rx="2" fill="rgba(255,255,255,0.6)"/>
+        <rect x="30" y="0" width="10" height="44" rx="2" fill="#ffffff"/>
+        <polygon points="35,0 29.5,8.5 40.5,8.5" fill="#ffffff"/>
+      </svg>
+    </div>
+    <div>
+      <div class="cb-header-name">Groven Assistant</div>
+      <div class="cb-header-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span> Online agora</div>
+    </div>
+    <button class="cb-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="cb-messages" id="cbMessages"></div>
+  <div class="cb-suggestions" id="cbSuggestions">
+    <button class="cb-chip" onclick="askSuggestion('Quais serviços vocês oferecem?')">Serviços</button>
+    <button class="cb-chip" onclick="askSuggestion('Como funciona o orçamento?')">Orçamento</button>
+    <button class="cb-chip" onclick="askSuggestion('Qual o prazo de entrega?')">Prazo</button>
+    <button class="cb-chip" onclick="askSuggestion('Como faço para contratar?')">Contratar</button>
+  </div>
+  <div class="cb-input-row">
+    <input class="cb-input" id="cbInput" type="text" placeholder="Digite sua dúvida..." onkeydown="if(event.key==='Enter')sendChatbotMsg()"/>
+    <button class="cb-send" id="cbSend" onclick="sendChatbotMsg()">→</button>
+  </div>
+  <div class="cb-escalate" id="cbEscalate" style="display:none">
+    <button onclick="window.open('mailto:groventecnologies@gmail.com','_blank')" style="background:var(--white);color:var(--black);border:none;border-radius:100px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-bottom:6px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> groventecnologies@gmail.com</button>
+    <button onclick="window.open('https://wa.me/5511941441309','_blank')" style="background:rgba(74,222,128,0.1);color:var(--green);border:1px solid rgba(74,222,128,0.2);border-radius:100px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;width:100%"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> WhatsApp</button>
+  </div>
+</div>
+
+</body>
+</html>
