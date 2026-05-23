@@ -208,13 +208,18 @@ textarea.cf-input{resize:vertical;min-height:110px}
 .ai-icon{font-size:0.8rem;color:rgba(255,255,255,0.2);letter-spacing:4px}
 .ai-inner p{color:rgba(255,255,255,0.25);font-size:0.78rem;line-height:1.6}
 .ai-inner strong{color:rgba(255,255,255,0.4);font-weight:500}
-footer{padding:60px 100px 60px 60px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center}
+footer{padding:60px 120px;border-top:1px solid rgba(255,255,255,0.06);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:32px}
+footer>.footer-logo{justify-self:start}
+footer>.footer-copy{justify-self:center;text-align:center;margin:0}
+footer>.footer-links{justify-self:end}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;background:linear-gradient(135deg,#fff 0%,#666 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.footer-copy{color:rgba(255,255,255,0.2);font-size:0.8rem}
-.footer-links{display:flex;gap:32px;list-style:none;align-items:center}
-.footer-links a{color:rgba(255,255,255,0.2);text-decoration:none;font-size:0.8rem;transition:color 0.3s}
+.footer-copy{color:rgba(255,255,255,0.2);font-size:0.8rem;margin:0}
+.footer-links{display:flex;gap:28px;list-style:none;align-items:center;padding:0;margin:0;flex-wrap:wrap;justify-content:flex-end;line-height:1}
+.footer-links li{display:inline-flex;align-items:center;line-height:1}
+.footer-links a{color:rgba(255,255,255,0.2);text-decoration:none;font-size:0.8rem;transition:color 0.3s;display:inline-flex;align-items:center;line-height:1}
 .footer-links a:hover{color:var(--white)}
-.footer-social-link{display:inline-flex;align-items:center;gap:6px !important}
+.footer-social-link{gap:6px !important}
+.footer-social-link svg{display:block}
 .reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s ease,transform 0.8s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @keyframes pageEnter{from{opacity:0;transform:scale(0.98) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}

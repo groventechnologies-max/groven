@@ -53,7 +53,7 @@
   <!-- Right side decorative stats -->
   <g transform="translate(740, 180)">
     <rect x="0" y="0" width="360" height="90" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-    <text x="28" y="38" font-family="'Georgia', serif" font-size="32" font-weight="700" fill="#ffffff">15 dias</text>
+    <text x="28" y="38" font-family="'Georgia', serif" font-size="32" font-weight="700" fill="#ffffff">~1 mês</text>
     <text x="28" y="62" font-family="'Arial', sans-serif" font-size="14" fill="rgba(255,255,255,0.4)">média de entrega</text>
 
     <rect x="0" y="106" width="360" height="90" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>

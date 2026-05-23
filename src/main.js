@@ -94,11 +94,25 @@ function getInitials(s) {
   return s.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
 }
 
+function isSafeHttpUrl(u) {
+  if (!u || typeof u !== 'string') return false;
+  try { const p = new URL(u, location.origin); return p.protocol === 'https:' || p.protocol === 'http:'; }
+  catch { return false; }
+}
+
 function setAvatar(id, url, ini) {
   const el = document.getElementById(id);
   if (!el) return;
-  if (url) { el.innerHTML = `<img src="${url}" alt="av" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; el.textContent = ''; }
-  else { el.innerHTML = ''; el.textContent = ini; }
+  el.textContent = '';
+  if (url && isSafeHttpUrl(url)) {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = 'av';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%';
+    el.appendChild(img);
+  } else {
+    el.textContent = ini;
+  }
 }
 
 function updateNavState() {
@@ -153,7 +167,7 @@ async function loadNotifications() {
   badge.style.display = unread > 0 ? 'flex' : 'none';
   const list = document.getElementById('notif-list');
   if (!data?.length) { list.innerHTML = '<div class="notif-empty">Nenhuma notificação</div>'; return; }
-  list.innerHTML = data.map(n => `<div class="notif-item ${n.read ? '' : 'unread'}" onclick="readNotif('${n.id}')"><div class="notif-dot ${n.read ? 'read' : ''}"></div><div><div class="notif-text">${escHtml(n.message)}</div><div class="notif-time">${timeAgo(n.created_at)}</div></div></div>`).join('');
+  list.innerHTML = data.map(n => `<div class="notif-item ${n.read ? '' : 'unread'}" data-id="${escHtml(n.id)}" onclick="readNotif(this.dataset.id)"><div class="notif-dot ${n.read ? 'read' : ''}"></div><div><div class="notif-text">${escHtml(n.message)}</div><div class="notif-time">${timeAgo(n.created_at)}</div></div></div>`).join('');
 }
 
 async function readNotif(id) { await sb.from('notifications').update({ read: true }).eq('id', id); loadNotifications(); }
@@ -264,8 +278,8 @@ async function uploadAttachments(files) {
 
 // ── CTA ───────────────────────────────────────────────────────────────────
 function handleCtaClick(action) {
-  if (action === 'email') { window.open('mailto:groventecnologies@gmail.com', '_blank'); return; }
-  if (action === 'whatsapp') { window.open('https://wa.me/5511941441309', '_blank'); return; }
+  if (action === 'email') { window.open('mailto:groventecnologies@gmail.com', '_blank', 'noopener,noreferrer'); return; }
+  if (action === 'whatsapp') { window.open('https://wa.me/5511941441309', '_blank', 'noopener,noreferrer'); return; }
   if (currentUser) {
     openDash();
     if (action) setTimeout(() => { document.getElementById('nc-channel').value = action === 'whatsapp' ? 'whatsapp' : 'email'; document.getElementById('nc-subject').focus(); }, 300);
@@ -393,7 +407,7 @@ async function loadClientContacts() {
   tbody.innerHTML = data.map(x => `<tr>
     <td>${escHtml(x.subject)}</td><td>${chLabel(x.channel)}</td><td>${stBadge(x.status)}</td>
     <td style="color:var(--gray);white-space:nowrap">${fmtDate(x.created_at)}</td>
-    <td><button class="dbtn-sm" data-id="${x.id}" data-subject="${escHtml(x.subject)}" onclick="clientOpenChat(this)">Chat</button></td>
+    <td><button class="dbtn-sm" data-id="${escHtml(x.id)}" data-subject="${escHtml(x.subject)}" onclick="clientOpenChat(this)">Chat</button></td>
   </tr>`).join('');
 }
 
@@ -428,11 +442,12 @@ function renderProjectCard(p) {
   const sm = { planning: ['Planejamento', 'var(--gray)'], in_progress: ['Em andamento', 'var(--blue)'], review: ['Revisão', 'var(--yellow)'], completed: ['Concluído', 'var(--green)'] };
   const [sl, sc] = sm[p.status] || ['—', 'var(--gray)'];
   const steps = p.project_steps || [];
+  const prog = Math.max(0, Math.min(100, Number(p.progress) || 0));
   return `<div class="project-card">
     <div class="project-header"><div class="project-title-text">${escHtml(p.title)}</div><span class="dbadge" style="background:${sc}22;color:${sc};border:1px solid ${sc}44">${sl}</span></div>
     ${p.description ? `<div class="project-desc">${escHtml(p.description)}</div>` : ''}
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progress}%"></div></div>
-    <div class="progress-label"><span>Progresso</span><span>${p.progress}%</span></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${prog}%"></div></div>
+    <div class="progress-label"><span>Progresso</span><span>${prog}%</span></div>
     ${steps.length ? `<div class="project-steps">${steps.map(s => `<div class="project-step-item"><div class="step-check ${s.done ? 'done' : ''}">${s.done ? '✓' : ''}</div><span style="${s.done ? 'text-decoration:line-through;color:var(--gray)' : ''}">${escHtml(s.title)}</span></div>`).join('')}</div>` : ''}
     <div class="project-meta">${p.deadline ? `<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
   </div>`;
@@ -443,15 +458,16 @@ function renderAdminProjectCard(p) {
   const sm = { planning: ['Planejamento', 'var(--gray)'], in_progress: ['Em andamento', 'var(--blue)'], review: ['Revisão', 'var(--yellow)'], completed: ['Concluído', 'var(--green)'] };
   const [sl, sc] = sm[p.status] || ['—', 'var(--gray)'];
   const steps = p.project_steps || [];
+  const prog = Math.max(0, Math.min(100, Number(p.progress) || 0));
   return `<div class="project-card">
     <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px;display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${escHtml(clientName)}</div>
     <div class="project-header"><div class="project-title-text">${escHtml(p.title)}</div><span class="dbadge" style="background:${sc}22;color:${sc};border:1px solid ${sc}44">${sl}</span></div>
     ${p.description ? `<div class="project-desc">${escHtml(p.description)}</div>` : ''}
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${p.progress}%"></div></div>
-    <div class="progress-label"><span>Progresso</span><span>${p.progress}%</span></div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${prog}%"></div></div>
+    <div class="progress-label"><span>Progresso</span><span>${prog}%</span></div>
     ${steps.length ? `<div class="project-steps">${steps.map(s => `<div class="project-step-item"><div class="step-check ${s.done ? 'done' : ''}">${s.done ? '✓' : ''}</div><span style="${s.done ? 'text-decoration:line-through;color:var(--gray)' : ''}">${escHtml(s.title)}</span></div>`).join('')}</div>` : ''}
     <div class="project-meta">${p.deadline ? `<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Prazo: ${new Date(p.deadline).toLocaleDateString('pt-BR')}</div>` : ''}<div class="project-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> ${steps.filter(s => s.done).length}/${steps.length} etapas</div></div>
-    <div style="margin-top:12px"><button class="dbtn-sm" onclick="openEditProject('${p.id}')"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editar</button></div>
+    <div style="margin-top:12px"><button class="dbtn-sm" data-id="${escHtml(p.id)}" onclick="openEditProject(this.dataset.id)"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editar</button></div>
   </div>`;
 }
 
@@ -460,9 +476,7 @@ async function loadProfilePage() {
   document.getElementById('p-name').value = p.full_name || '';
   document.getElementById('p-company').value = p.company || '';
   document.getElementById('p-email').value = p.email || '';
-  const big = document.getElementById('profile-avatar-big');
-  if (p.avatar_url) { big.innerHTML = `<img src="${p.avatar_url}" alt="av" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; big.textContent = ''; }
-  else { big.innerHTML = ''; big.textContent = getInitials(p.full_name || p.email); }
+  setAvatar('profile-avatar-big', p.avatar_url, getInitials(p.full_name || p.email));
 }
 
 async function saveProfile() {
@@ -488,10 +502,10 @@ async function uploadAvatar(input) {
   await sb.from('profiles').update({ avatar_url: publicUrl }).eq('id', currentUser.id);
   const urlDisplay = publicUrl + '?t=' + Date.now();
   currentProfile = { ...currentProfile, avatar_url: publicUrl };
-  setAvatar('nav-av', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
-  setAvatar('d-av', urlDisplay, getInitials(currentProfile.full_name || currentProfile.email));
-  const big = document.getElementById('profile-avatar-big');
-  if (big) { big.innerHTML = `<img src="${urlDisplay}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`; }
+  const ini = getInitials(currentProfile.full_name || currentProfile.email);
+  setAvatar('nav-av', urlDisplay, ini);
+  setAvatar('d-av', urlDisplay, ini);
+  setAvatar('profile-avatar-big', urlDisplay, ini);
   showToast('Foto atualizada!', 'success');
 }
 
@@ -529,8 +543,8 @@ async function loadAdminContacts() {
           <td>${chLabel(c.channel)}</td><td>${stBadge(c.status)}</td>
           <td style="color:var(--gray);white-space:nowrap">${fmtDate(c.created_at)}</td>
           <td style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="dbtn-sm" style="position:relative" onclick="adminOpenChat(this)" data-id="${c.id}" data-subject="${escHtml(c.subject)}">Chat${badge}</button>
-            <button class="dbtn-sm" style="color:var(--red);border-color:rgba(248,113,113,0.2)" onclick="adminDeleteContact(this)" data-id="${c.id}" data-subject="${escHtml(c.subject)}">Remover</button>
+            <button class="dbtn-sm" style="position:relative" onclick="adminOpenChat(this)" data-id="${escHtml(c.id)}" data-subject="${escHtml(c.subject)}">Chat${badge}</button>
+            <button class="dbtn-sm" style="color:var(--red);border-color:rgba(248,113,113,0.2)" onclick="adminDeleteContact(this)" data-id="${escHtml(c.id)}" data-subject="${escHtml(c.subject)}">Remover</button>
           </td>
         </tr>`;
       }).join('');
@@ -582,17 +596,17 @@ async function loadAdminClients() {
   tbody.innerHTML = !data?.length
     ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Nenhum cliente.</div></td></tr>`
     : data.map(c => {
-        const avatarEl = c.avatar_url
-          ? `<img src="${c.avatar_url}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--border)"/>`
-          : `<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#333,#555);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:500;color:#fff;flex-shrink:0">${getInitials(c.full_name || c.email)}</div>`;
+        const avatarEl = (c.avatar_url && isSafeHttpUrl(c.avatar_url))
+          ? `<img src="${escHtml(c.avatar_url)}" alt="av" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--border)"/>`
+          : `<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#333,#555);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:500;color:#fff;flex-shrink:0">${escHtml(getInitials(c.full_name || c.email))}</div>`;
         return `<tr>
           <td><div style="display:flex;align-items:center;gap:10px">${avatarEl}<span>${escHtml(c.full_name || '—')}</span></div></td>
           <td style="color:var(--gray)">${escHtml(c.email)}</td>
           <td style="color:var(--gray)">${escHtml(c.company || '—')}</td>
           <td><span class="role-pill ${c.role === 'admin' ? 'role-admin' : 'role-client'}">${c.role === 'admin' ? 'Admin' : 'Cliente'}</span></td>
           <td style="color:var(--gray);white-space:nowrap">${fmtDate(c.created_at)}</td>
-          <td><button class="dbtn-sm" data-id="${c.id}" data-role="${c.role}" onclick="openEditRole(this.dataset.id,this.dataset.role)">Alterar</button>
-          ${c.role !== 'admin' ? `<button class="dbtn-sm" style="margin-left:4px" data-id="${c.id}" data-name="${escHtml(c.full_name || c.email)}" onclick="adminStartChat(this)">Chat</button>` : ''}</td>
+          <td><button class="dbtn-sm" data-id="${escHtml(c.id)}" data-role="${escHtml(c.role)}" onclick="openEditRole(this.dataset.id,this.dataset.role)">Alterar</button>
+          ${c.role !== 'admin' ? `<button class="dbtn-sm" style="margin-left:4px" data-id="${escHtml(c.id)}" data-name="${escHtml(c.full_name || c.email)}" onclick="adminStartChat(this)">Chat</button>` : ''}</td>
         </tr>`;
       }).join('');
 }
@@ -765,7 +779,7 @@ function fileIcon(m) {
   return '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>';
 }
 function formatBytes(b) { if (!b) return ''; if (b < 1024) return b + 'B'; if (b < 1048576) return (b / 1024).toFixed(1) + 'KB'; return (b / 1048576).toFixed(1) + 'MB'; }
-function escHtml(s) { if (!s) return ''; return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function escHtml(s) { if (s == null) return ''; return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/`/g, '&#96;'); }
 
 let toastTimer;
 function showToast(msg, type = '') {
